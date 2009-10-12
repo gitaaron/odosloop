@@ -31,7 +31,7 @@ namespace :deploy do
     [:start, :stop, :restart].each do |t|
         desc "#{t} django instances" 
         task t, :roles => :app, :except => { :no_release => true } do 
-            #run "supervisorctl #{t} sodalabs:*"
+            run "supervisorctl #{t} sodalabs:*"
         end
     end
 
