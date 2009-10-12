@@ -4,6 +4,8 @@ from django.conf.urls.defaults import *
 from django.contrib import admin
 admin.autodiscover()
 
+from django.views.generic.simple import direct_to_template
+
 urlpatterns = patterns('',
     # Example:
     # (r'^sodalabs/', include('sodalabs.foo.urls')),
@@ -14,4 +16,7 @@ urlpatterns = patterns('',
 
     # Uncomment the next line to enable the admin:
     (r'^admin/', include(admin.site.urls)),
+
+    (r'^$', direct_to_template, {'template':'index.html'}),
+
 )
