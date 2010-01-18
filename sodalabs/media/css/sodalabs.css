@@ -1,0 +1,9 @@
+ul.vertical_list { list-style-type:none; margin:0; padding:0; float:left;} 
+ul.vertical_list li.vertical_item { float:left; clear:both; width:100%; } 
+
+div#videoDiv { width:480px; height:295px; background:#efcf22; }
+h1#title { height:34px; }
+a.now_playing { background:#dddd55!important; } 
+ul#recent_playlist li { height:22px; } 
+ul#recent_playlist a { padding:3px; text-decoration:none; color:#ffffff; background:#33ff33; float:left;width:100%; }
+ul#recent_playlist a:hover { background:#ff3333; } 

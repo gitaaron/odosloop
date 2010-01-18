@@ -19,7 +19,7 @@ urlpatterns = patterns('',
     (r'^admin/', include(admin.site.urls)),
 
     (r'^$', direct_to_template, {'template':'index.html'}),
-
+    (r'^playlist/', include('sodalabs.playlistia.urls')),
 )
 
 
