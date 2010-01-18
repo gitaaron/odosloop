@@ -20,6 +20,7 @@ urlpatterns = patterns('',
 
     (r'^$', direct_to_template, {'template':'index.html'}),
     (r'^playlist/', include('sodalabs.playlistia.urls')),
+    (r'^jeeves/', direct_to_template, {'template':'jeeves.html'}),
 )
 
 
