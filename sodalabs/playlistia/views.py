@@ -8,14 +8,17 @@ import urllib
 from lxml.html import fromstring
 from lxml import etree
 
-lastfm_api_url = 'http://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user=surtyaar&api_key=575da82dcdf635b030df7efa4386e351&limit=100'
+lastfm_api_url = 'http://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&api_key=575da82dcdf635b030df7efa4386e351&limit=100&user='
 
 
-def index(request):
+def profile(request):
+    username = request.GET.get('username',False)
+    if not username:
+        username = 'surtyaar'
     # compile lastfm list of name,artist 
     lastfm_recents = []
     try:
-        content = urllib.urlopen(lastfm_api_url).read()
+        content = urllib.urlopen(lastfm_api_url+username).read()
     except IOError:
         raise Http404()
     doc = fromstring(content)
@@ -27,7 +30,7 @@ def index(request):
         lastfm_recents.append({'name':name,'artist':artist})
 
     
-    return direct_to_template(request, 'playlistia/index.html', {'lastfm_recents': lastfm_recents})
+    return direct_to_template(request, 'playlistia/profile.html', {'lastfm_recents': lastfm_recents})
 
 def open(request):
     client = gdata.youtube.service.YouTubeService()
