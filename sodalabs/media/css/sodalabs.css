@@ -7,3 +7,4 @@ a.now_playing { background:#dddd55!important; }
 ul#recent_playlist li { height:22px; } 
 ul#recent_playlist a { padding:3px; text-decoration:none; color:#ffffff; background:#33ff33; float:left;width:100%; }
 ul#recent_playlist a:hover { background:#ff3333; } 
+#top_container { height:400px; } 

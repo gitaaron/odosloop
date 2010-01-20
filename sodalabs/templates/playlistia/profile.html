@@ -63,10 +63,12 @@ var Playlist = {
     }
 }
 </script>
+<div id="top_container">
 <h1 id="title">Hello...</h1>
 <div  id="videoDiv">Loading...</div>
+</div>
 
-<h1>surtyaar's lastfm recents</h1>
+<h1>{{username}}'s lastfm recents</h1>
 <ul id="recent_playlist" class="vertical_list" >
 {% for recent in lastfm_recents %}
 <script type="text/javascript">

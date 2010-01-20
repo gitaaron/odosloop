@@ -30,7 +30,7 @@ def profile(request):
         lastfm_recents.append({'name':name,'artist':artist})
 
     
-    return direct_to_template(request, 'playlistia/profile.html', {'lastfm_recents': lastfm_recents})
+    return direct_to_template(request, 'playlistia/profile.html', {'lastfm_recents': lastfm_recents, 'username':username})
 
 def open(request):
     client = gdata.youtube.service.YouTubeService()
