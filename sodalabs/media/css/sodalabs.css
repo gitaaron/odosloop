@@ -4,7 +4,10 @@ ul.vertical_list li.vertical_item { float:left; clear:both; width:100%; }
 div#videoDiv { width:480px; height:295px; background:#efcf22; }
 h1#title { height:45px;width:480px; overflow:hidden; }
 a.now_playing { background:#dddd55!important; } 
-#lastfm_container li.vertical_item { width:250px;font-size:14px;} 
+#lastfm_container li.vertical_item { font-size:14px;} 
+#lastfm_friends_container { width:150px; overflow:hidden; } 
+#lastfm_neighbours_container { width:150px; overflow:hidden; } 
+#lastfm_recents_container { width:250px; overflow:hidden; } 
 ul#recent_list a { padding:3px; text-decoration:none; color:#ffffff; background:#33ff33; float:left;width:100%; }
 ul#recent_list a:hover { background:#ff3333; } 
 #youtube_container { height:352px; float:right;} 
