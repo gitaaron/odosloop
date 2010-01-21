@@ -2,7 +2,7 @@ ul.vertical_list { list-style-type:none; margin:0; padding:0; float:left;}
 ul.vertical_list li.vertical_item { float:left; clear:both; width:100%; } 
 
 div#videoDiv { width:480px; height:295px; background:#efcf22; }
-h1#title { height:34px;width:480px; overflow:hidden; }
+h1#title { height:45px;width:480px; overflow:hidden; }
 a.now_playing { background:#dddd55!important; } 
 #lastfm_container li.vertical_item { width:250px;font-size:14px;} 
 ul#recent_list a { padding:3px; text-decoration:none; color:#ffffff; background:#33ff33; float:left;width:100%; }

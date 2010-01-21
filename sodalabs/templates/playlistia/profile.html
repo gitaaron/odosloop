@@ -114,7 +114,7 @@ var Playlist = {
 {% for recent in lastfm_recents %}
 <script type="text/javascript">
     $(document).ready(function() {
-        qString = '{{recent.name}} {{recent.artist}}';
+        qString = '{{recent.name|escape}} {{recent.artist|escape}}';
         length = Playlist.songs.push(qString);
         id = length-1;
         $('#'+id).bind('click',function() {
