@@ -8,48 +8,83 @@ import urllib
 from lxml.html import fromstring
 from lxml import etree
 
-lastfm_api_url = 'http://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&api_key=575da82dcdf635b030df7efa4386e351&limit=100&user='
 
+def _get_lastfm_api_url(method,params):
+    url = 'http://ws.audioscrobbler.com/2.0/?method=%s&api_key=575da82dcdf635b030df7efa4386e351' % method
+    for key in params:
+        url+='&'+key+'='+params[key]
+    return url 
 
-def profile(request):
-    username = request.GET.get('username',False)
-    if not username:
-        username = 'surtyaar'
-    # compile lastfm list of name,artist 
-    lastfm_recents = []
+def _make_lastfm_request(method,params={}):
     try:
-        content = urllib.urlopen(lastfm_api_url+username).read()
+        lastfm_url = _get_lastfm_api_url(method,params)
+        content = urllib.urlopen(lastfm_url).read()
+        return fromstring(content)
+
     except IOError:
-        raise Http404()
-    doc = fromstring(content)
-    track_path = etree.XPath('//track')
+        return None
+
+error_path = etree.XPath('//error')
+track_path = etree.XPath('//track')
+user_path = etree.XPath('//user')
+
+def profile(request, username=None):
+    if not username:
+        username = request.GET.get('username',None)
+    if not username:
+        return diret_to_template(request,'playlistia/index.html',{'message':'Your request is missing a required paramater.'})
+    # compile lastfm list of name,artist 
+
+    doc = _make_lastfm_request('user.getrecenttracks',{'limit':'100','user':username})
+    if not doc:
+        return direct_to_template(request, 'playlistia/index.html',{'message':'A problem occured accessing the last.fm api.'})
+    errors = error_path(doc)
+    if errors:
+        return direct_to_template(request, 'playlistia/index.html',{'message':errors[0].text_content()})
+
+    lastfm_recents = []
     tracks = track_path(doc)
     for track in tracks:
         artist = track.find('artist').text_content()
         name = track.find('name').text_content()
         lastfm_recents.append({'name':name,'artist':artist})
 
-    
-    return direct_to_template(request, 'playlistia/profile.html', {'lastfm_recents': lastfm_recents, 'username':username})
+    lastfm_friends = []
+    doc = _make_lastfm_request('user.getfriends',{'user':username})
+    users = user_path(doc)
+    for user in users:
+        lastfm_friends.append({'name':user.find('name').text_content()})
+
+    lastfm_neighbours = []
+    doc = _make_lastfm_request('user.getneighbours',{'user':username})
+    users = user_path(doc)
+    for user in users:
+        lastfm_neighbours.append({'name':user.find('name').text_content()})
+
+    return direct_to_template(request, 'playlistia/profile.html', {'lastfm_recents': lastfm_recents, 'lastfm_friends':lastfm_friends, 'lastfm_neighbours':lastfm_neighbours, 'username':username})
 
 def open(request):
     client = gdata.youtube.service.YouTubeService()
     query = gdata.youtube.service.YouTubeVideoQuery()
     q = request.GET.get('q',False)
     if not q:
-        raise Http404()
+        return HttpResponse(json.dumps({'status':'failed','message':'search term missing'}),content_type="application/json")
 
     query.vq = q
     query.max_results = 25
     feed = client.YouTubeQuery(query)
     video_id = ''
+    embedable_found = False
     for entry in feed.entry:
         if not entry.noembed:
+            embedable_found = True
             break
 
-    if entry: 
-        dict = {'video_id':entry.id.text.split('/').pop(), 'video_title':entry.title.text}
+    if not feed.entry:
+        return HttpResponse(json.dumps({'status':'failed', 'message':'no results returned'}),content_type="application/json")
+    elif not embedable_found:
+        return HttpResponse(json.dumps({'status':'failed', 'message':'no embedable songs found'}),content_type="application/json")
     else:
-        raise Http404()
+        dict = {'status':'ok', 'video_id':entry.id.text.split('/').pop(), 'video_title':entry.title.text}
 
     return HttpResponse(json.dumps(dict), content_type="application/json")

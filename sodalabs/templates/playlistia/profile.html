@@ -25,7 +25,13 @@ var Playlist = {
         Playlist.currentSong = songId;
         $.get('/playlist/open/',{'q':q}, function(data) {
                 jsonData = JSON.parse(data);
-                Playlist.play(jsonData['video_id'], jsonData['video_title']);
+                if(jsonData['status']=='ok') {
+                    Playlist.play(jsonData['video_id'], jsonData['video_title']);
+                } else { 
+                    elem = Playlist.getElemById(songId);
+                    elem.html('(error) ' + elem.html());       
+                    Playlist.goToNext();
+                }
         });
         return false;
     },
@@ -36,7 +42,8 @@ var Playlist = {
         */
         songId = Playlist.currentSong;
         $('.recent_song').attr('class','recent_song');
-        $('#'+songId).attr('class','recent_song now_playing');
+        elem = Playlist.getElemById(songId);
+        $(elem).attr('class','recent_song now_playing');
         $('#title').html(title);
         if(Playlist.player) {
             Playlist.player.loadVideoById(id);
@@ -55,21 +62,55 @@ var Playlist = {
 
 
     },
+
+    getElemById : function(id) {
+        return $('#'+id);
+    },
+
     onPlayerStateChange : function(state) {
         if (state==0) {
-            songId = Playlist.currentSong+1;
-            Playlist.open(songId);
+            Playlist.goToNext();
         }
+    },
+    
+    goToNext : function() {
+        songId = Playlist.currentSong+1;
+        Playlist.open(songId);
     }
+
 }
 </script>
-<div id="top_container">
+<div id="youtube_container">
 <h1 id="title">Hello...</h1>
 <div  id="videoDiv">Loading...</div>
 </div>
 
-<h1>{{username}}'s lastfm recents</h1>
-<ul id="recent_playlist" class="vertical_list" >
+<div id="lastfm_container">
+<h1>{{username}} on lastfm</h1>
+<div style="clear:both;"></div>
+<div id="lastfm_friends_container" class="lastfm_list_container">
+    <h3>friends</h3>
+    <ul id="friends_list" class="vertical_list">
+    {% for friend in lastfm_friends %}
+        <li class="vertical_item"><a href="/playlist/user/{{friend.name}}">{{friend.name}}</a></li>
+    {% empty %}
+        <li class="vertical_item">No friends found...</li>
+    {% endfor %}
+    </ul>
+</div>
+<div id="lastfm_neighbours_container" class="lastfm_list_container">
+    <h3>neighbours</h3>
+    <ul id="neighbours_list" class="vertical_list">
+    {% for neighbour in lastfm_neighbours %}
+        <li class="vertical_item"><a href="/playlist/user/{{neighbour.name}}">{{neighbour.name}}</a></li>
+    {% empty %}
+        <li class="vertical_item">No neighbours found...</li>
+    {% endfor %}
+    </ul>
+</div>
+<div id="lastfm_recents_container" class="lastfm_list_container">
+<h3>recent scrobbles</h3>
+<ul id="recent_list" class="vertical_list" >
 {% for recent in lastfm_recents %}
 <script type="text/javascript">
     $(document).ready(function() {
@@ -81,12 +122,16 @@ var Playlist = {
         });
     });
 </script>
-<li><a class="recent_song" id="{{forloop.counter0}}" href="#{{recent.artist}}-{{recent.name}}" >{{recent.artist}} - {{recent.name}}</a></li>
+<li class="vertical_item"><a class="recent_song" id="{{forloop.counter0}}" href="#{{recent.artist}}-{{recent.name}}" >{{recent.artist}} - {{recent.name}}</a></li>
+{% empty %}
+<li class="vertical_item">No songs found...</li>
 {% endfor %}
 </ul>
+</div>
 <script type="text/javascript">
     $(document).ready(function() {
         Playlist.open(0);
     });
 </script>
+</div>
 {% endblock %}

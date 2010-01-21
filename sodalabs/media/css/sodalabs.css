@@ -2,10 +2,12 @@ ul.vertical_list { list-style-type:none; margin:0; padding:0; float:left;}
 ul.vertical_list li.vertical_item { float:left; clear:both; width:100%; } 
 
 div#videoDiv { width:480px; height:295px; background:#efcf22; }
-h1#title { height:34px; }
+h1#title { height:34px;width:480px; overflow:hidden; }
 a.now_playing { background:#dddd55!important; } 
-ul#recent_playlist li { height:22px; } 
-ul#recent_playlist a { padding:3px; text-decoration:none; color:#ffffff; background:#33ff33; float:left;width:100%; }
-ul#recent_playlist a:hover { background:#ff3333; } 
-#top_container { height:400px; } 
-h1 { margin:0px; } 
+#lastfm_container li.vertical_item { width:250px;font-size:14px;} 
+ul#recent_list a { padding:3px; text-decoration:none; color:#ffffff; background:#33ff33; float:left;width:100%; }
+ul#recent_list a:hover { background:#ff3333; } 
+#youtube_container { height:352px; float:right;} 
+h1 { margin:0px; font-size:20px;} 
+.lastfm_list_container { float:left; width:250px; } 
+#lastfm_container { float:left; } 
