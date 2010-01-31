@@ -1,6 +1,9 @@
+/* general */
 ul.vertical_list { list-style-type:none; margin:0; padding:0; float:left;} 
 ul.vertical_list li.vertical_item { float:left; clear:both; width:100%; } 
+.horizontal_list li.horizontal_item { float:left; } 
 
+/* old stuffs */
 div#videoDiv { width:480px; height:295px; background:#efcf22; }
 h1#title { height:45px;width:480px; overflow:hidden; }
 a.now_playing { background:#dddd55!important; } 
@@ -8,9 +11,113 @@ a.now_playing { background:#dddd55!important; }
 #lastfm_friends_container { width:150px; overflow:hidden; } 
 #lastfm_neighbours_container { width:150px; overflow:hidden; } 
 #lastfm_recents_container { width:250px; overflow:hidden; } 
-ul#recent_list a { padding:3px; text-decoration:none; color:#ffffff; background:#33ff33; float:left;width:100%; }
-ul#recent_list a:hover { background:#ff3333; } 
+ul#recent_list a,ul#track_list a { padding:3px; text-decoration:none; color:#ffffff; background:#33ff33; float:left;width:100%; }
+ul#recent_list a:hover, ul#track_list a:hover { background:#ff3333; } 
 #youtube_container { height:352px; float:right;} 
 h1 { margin:0px; font-size:20px;} 
 .lastfm_list_container { float:left; width:250px; } 
 #lastfm_container { float:left; } 
+
+
+/* header */
+div#header { float:left; width:100%; }
+div#login_container { float:right; } 
+div#header h1, div#header form#music_search_form { float:left; } 
+div#header form#music_search_form { margin-left:50px; } 
+
+/* sign in page */
+.signup_page #title a { 
+    float:left;
+    margin:20px 0 5px 20px;
+}
+.signup_page #title a img { 
+    border:none;
+}
+
+.signup_page { 
+    width:760px; 
+} 
+
+.form_container .error_message {
+    border:2px solid #eeee22;
+    background:#cccc99;
+    padding:5px;
+    margin-bottom:10px;
+}
+#register_form_container {
+    width:368px; 
+}
+
+#login_form_container {
+    width:280px;
+}
+
+
+.signup_page div#footer  { 
+    border-top:thin solid #aaaaaa; 
+    float:left;
+    width:100%;
+    margin-top:20px; 
+    padding-top:10px; 
+} 
+#register_form_container, #login_form_container{
+    float:left; 
+    background:#aaaaaa; 
+    padding:10px;
+    margin:10px;
+}
+
+#register_form_container form {
+    width:336px;
+    margin:0px auto;
+}
+
+#login_form_container form {
+    width:247px;
+    margin:0px auto;
+}
+
+#register_form_container th {
+    width:175px;
+    float:left;
+}
+#login_form_container th {
+    width:81px;
+    float:left;
+}
+.form_container th {
+    font-weight:normal;
+    font-size:15px;
+    text-align:left;
+}
+.form_container tr {
+    height:26px; 
+}
+.form_container h3 {
+    margin-bottom:10px; 
+    margin-top:8px; 
+}
+
+.register_reasons_list {
+    list-style-type:circle !important;
+    float:left;
+    margin:0 0 10px 17px;
+    width:300px;
+    font-size:13px; 
+    padding-left:5px; 
+}
+#register_reasons_one, #register_reasons_one li {
+    width:164px;
+}
+#register_reasons_two, #register_reasons_two li { 
+    width:100px; 
+}
+.register_reasons_list li {
+    float:left; 
+    width:150px;
+    margin-bottom:3px;
+}
+
+.field_error_msg {
+    color:#ee0000;
+}

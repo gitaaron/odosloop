@@ -1,0 +1,16 @@
+<div id="header">
+<h1>ODOSLOOP</h1>
+<form id="music_search_form" action="/" method="get">
+    <input type="text" {% if q %} value="{{q}}" {% endif %} name="q" />
+    <button type="submit">Search Music</button>
+</form>
+
+<div id="login_container">
+    {% if user.is_authenticated %}
+        {{user.username}} <a href="/accounts/logout">Logout</a>
+    {% else %}
+        <a href="/accounts/signup?next={{request.get_full_path}}">sign in</a>
+    {% endif %}
+</div>
+
+</div>
