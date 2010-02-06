@@ -1,4 +1,5 @@
 /* general */
+body { background-color:#555555; } 
 ul.vertical_list { list-style-type:none; margin:0; padding:0; float:left;} 
 ul.vertical_list li.vertical_item { float:left; clear:both; width:100%; } 
 .horizontal_list li.horizontal_item { float:left; } 
