@@ -6,7 +6,7 @@ ul.vertical_list li.vertical_item { float:left; clear:both; width:100%; }
 /* old stuffs */
 div#videoDiv { width:480px; height:295px; background:#efcf22; }
 h1#title { height:45px;width:480px; overflow:hidden; }
-a.now_playing { background:#dddd55!important; } 
+a.now_playing { color:#ee3333!important; background:#dddd55!important; } 
 #lastfm_container li.vertical_item { font-size:14px;} 
 #lastfm_friends_container { width:150px; overflow:hidden; } 
 #lastfm_neighbours_container { width:150px; overflow:hidden; } 
