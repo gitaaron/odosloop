@@ -65,7 +65,7 @@ def open(request):
             lastfm_track_song = LastFMTrackSong(lastfm_track=track,song=song)
             lastfm_track_song.save()
 
-        if request.user.is_authenticated:
+        if request.user.is_authenticated():
             song_played = PlayHistory(musiphile=request.user,song=lastfm_track_song) 
             song_played.save()
 
