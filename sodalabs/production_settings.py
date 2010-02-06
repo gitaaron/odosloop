@@ -1,11 +1,18 @@
 # Django settings for sodalabs project.
 
+AUTHENTICATION_BACKENDS = ('django.contrib.auth.backends.ModelBackend', 'sodalabs.accounts.backends.ModelBackend',)
+
+
+
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
     # ('Your Name', 'your_email@domain.com'),
 )
+
+LOGOUT_REDIRECT_URL = '/'
+LOGIN_REDIRECT_URL = '/'
 
 MANAGERS = ADMINS
 
