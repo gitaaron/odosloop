@@ -10,4 +10,4 @@ def index(request):
     doc = make_lastfm_request('track.search', {'track':q})
     tracks = get_tracks(doc) 
 
-    return direct_to_template(request, 'index.html', {'lastfm_tracks':tracks, 'q':q}) 
+    return direct_to_template(request, 'index.html', {'playlist_title':'music search results', 'lastfm_tracks':tracks, 'q':q}) 

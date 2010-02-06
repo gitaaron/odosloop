@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% include 'includes/player.html' %}
+<div id="lastfm_container">
+<h1>{{username}} on lastfm</h1>
+<div style="clear:both;"></div>
+<div id="lastfm_friends_container" class="lastfm_list_container">
+    <h3>friends</h3>
+    <ul id="friends_list" class="vertical_list">
+    {% for friend in lastfm_friends %}
+        <li class="vertical_item"><a href="/lastfm/{{friend.name}}">{{friend.name}}</a></li>
+    {% empty %}
+        <li class="vertical_item">No friends found...</li>
+    {% endfor %}
+    </ul>
+</div>
+<div id="lastfm_neighbours_container" class="lastfm_list_container">
+    <h3>neighbours</h3>
+    <ul id="neighbours_list" class="vertical_list">
+    {% for neighbour in lastfm_neighbours %}
+        <li class="vertical_item"><a href="/lastfm/{{neighbour.name}}">{{neighbour.name}}</a></li>
+    {% empty %}
+        <li class="vertical_item">No neighbours found...</li>
+    {% endfor %}
+    </ul>
+</div>
+{% include 'includes/playlist.html' %}
+{% endblock %}

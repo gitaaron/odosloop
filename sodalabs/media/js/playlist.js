@@ -1,3 +1,5 @@
+API_KEY = 'AI39si4G2-0d2C5E98vAfsM8RT5Z7h8md7wClPvY_Jhfu8oyonkYkjCuA_DBJehHGtPzb6UdIspQhf7M3Cc6_NW2pTT3t4uZ4A';
+
 function onYouTubePlayerReady(playerId) {
     ytplayer = document.getElementById('ytPlayer');
     ytplayer.addEventListener('onStateChange','Playlist.onPlayerStateChange');
@@ -13,13 +15,17 @@ var Playlist = {
 
     open : function(songId) {
         songId = parseInt(songId);
-        q = Playlist.songs[songId];
+        song = Playlist.songs[songId];
 
         Playlist.currentSong = songId;
-        $.get('/jukebox/open/',{'q':q}, function(data) {
+        $.get('/jukebox/open/', song, function(data) {
                 jsonData = JSON.parse(data);
                 if(jsonData['status']=='ok') {
                     Playlist.play(jsonData['video_id'], jsonData['video_title']);
+                    $('#radio_form').css('display','block');
+                    track = $('#radio_form').children().filter('input[name|=lastfm_track]');
+                    track.attr('value',jsonData['lastfm_track_id'])
+                    console.log('track : ' + track.attr('id'));
                 } else { 
                     Playlist.markSongAsErred(songId);
                     Playlist.goToNext();
@@ -52,7 +58,7 @@ var Playlist = {
             // The element id of the Flash embed
             var atts = { id: "ytPlayer" };
             // All of the magic handled by SWFObject (http://code.google.com/p/swfobject/)
-            swfobject.embedSWF("http://www.youtube.com/v/" + videoID + "&enablejsapi=1&playerapiid=player1",
+            swfobject.embedSWF("http://www.youtube.com/v/" + videoID + "&enablejsapi=1&playerapiid="+API_KEY,
                                "videoDiv", "480", "295", "8", null, null, params, atts);
 
         }

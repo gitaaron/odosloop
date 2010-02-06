@@ -89,4 +89,5 @@ INSTALLED_APPS = (
     'sodalabs.playlist',
     'sodalabs.jukebox',
     'sodalabs.accounts',
+    'sodalabs.lastfm'
 )

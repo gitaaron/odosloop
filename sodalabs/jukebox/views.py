@@ -5,16 +5,34 @@ from django.http import HttpResponse,Http404
 import gdata.youtube
 import gdata.youtube.service
 import django.utils.simplejson as json
+from sodalabs.lastfm.models import Track
+from sodalabs.jukebox.models import LastFMTrackSong,Song
+from sodalabs.accounts.models import PlayHistory
 
+YOUTUBE_API_KEY = 'AI39si4G2-0d2C5E98vAfsM8RT5Z7h8md7wClPvY_Jhfu8oyonkYkjCuA_DBJehHGtPzb6UdIspQhf7M3Cc6_NW2pTT3t4uZ4A'
 
 def open(request):
     client = gdata.youtube.service.YouTubeService()
+    client.developer_key = YOUTUBE_API_KEY
     query = gdata.youtube.service.YouTubeVideoQuery()
-    q = request.GET.get('q',False)
-    if not q:
-        return HttpResponse(json.dumps({'status':'failed','message':'search term missing'}),content_type="application/json")
+    name = request.GET.get('name',False)
+    artist = request.GET.get('artist',False)
+    q = request.GET.get('q','')
+    if not name:
+        return HttpResponse(json.dumps({'status':'failed','message':'name missing'}),content_type="application/json")
 
-    query.vq = _unescape(urllib.unquote(q))
+    if artist:
+        # see if lastfm track already exists
+        try:
+            track = Track.objects.get(name=name,artist=artist)
+        except Track.DoesNotExist:
+            track = Track(name=name,artist=artist,search=q)
+            track.save()
+
+        search = artist + ' - ' + name
+
+
+    query.vq = _unescape(urllib.unquote(search))
     query.max_results = 25
     try:
         feed = client.YouTubeQuery(query)
@@ -32,7 +50,26 @@ def open(request):
     elif not embedable_found:
         return HttpResponse(json.dumps({'status':'failed', 'message':'no embedable songs found'}),content_type="application/json")
     else:
-        dict = {'status':'ok', 'video_id':entry.id.text.split('/').pop(), 'video_title':entry.title.text}
+        # see if this song already exists
+        video_id = entry.id.text.split('/').pop()
+        video_title = entry.title.text 
+        try:
+            song = Song.objects.get(media_id=video_id)
+        except Song.DoesNotExist:
+            song = Song(media_id=video_id,media_title=video_title)
+            song.save()
+
+        try:
+            lastfm_track_song = LastFMTrackSong.objects.get(lastfm_track=track,song=song)
+        except LastFMTrackSong.DoesNotExist:
+            lastfm_track_song = LastFMTrackSong(lastfm_track=track,song=song)
+            lastfm_track_song.save()
+
+        if request.user.is_authenticated:
+            song_played = PlayHistory(musiphile=request.user,song=lastfm_track_song) 
+            song_played.save()
+
+        dict = {'status':'ok', 'video_id':entry.id.text.split('/').pop(), 'video_title':entry.title.text,'song_id':song.id,'lastfm_track_id':track.id}
 
     return HttpResponse(json.dumps(dict), content_type="application/json")
 

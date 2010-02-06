@@ -4,6 +4,7 @@ from django.http import HttpResponse,HttpResponseRedirect,Http404
 from django.views.generic.simple import direct_to_template
 from django.shortcuts import render_to_response
 from django.contrib.auth import authenticate
+from django.contrib.auth.decorators import login_required
 from django.views.decorators.cache import never_cache
 from django.contrib.sites.models import Site, RequestSite
 from django.template import RequestContext
@@ -11,13 +12,21 @@ from django.template import RequestContext
 from sodalabs import settings
 from sodalabs.accounts.forms import AuthenticationForm,UserCreationForm
 from sodalabs.rest_ws.helpers import ResponseBadRequest
+from sodalabs.accounts.models import Musiphile,PlayHistory
 
-from sodalabs.lastfm import make_lastfm_request,get_tracks,error_path,user_path
 
-
+@login_required
 def profile(request, username=None):
     """
     For now just look the user up in last.fm and display their info.
+    """
+    musiphile = Musiphile.objects.get(id=request.user.id)
+    songs_played = PlayHistory.objects.filter(musiphile=musiphile).order_by('created_at').reverse()[0:50]
+
+    tracks = []
+    for play in songs_played:
+        lastfm_track = play.song.lastfm_track
+        tracks.append({'name':lastfm_track.name,'artist':lastfm_track.artist})
     """
     #@TODO error templates do not exist anymore
     if not username:
@@ -47,8 +56,9 @@ def profile(request, username=None):
     users = user_path(doc)
     for user in users:
         lastfm_neighbours.append({'name':user.find('name').text_content()})
+    """
 
-    return direct_to_template(request, 'accounts/profile.html', {'lastfm_recents': lastfm_recents, 'lastfm_friends':lastfm_friends, 'lastfm_neighbours':lastfm_neighbours, 'username':username})
+    return direct_to_template(request, 'accounts/profile.html', {'playlist_title':'scrobbled on odosloop', 'lastfm_tracks': tracks, 'username':username})
 
 
 

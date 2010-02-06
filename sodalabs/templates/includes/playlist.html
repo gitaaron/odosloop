@@ -1,0 +1,31 @@
+<div id="lastfm_container">
+    <div id="lastfm_tracks_container" class="lastfm_list_container">
+        <h3>{{playlist_title}}</h3>
+        <ul id="track_list" class="vertical_list">
+        {% for track in lastfm_tracks %}
+            <script type="text/javascript">
+                $(document).ready(function() {
+                    qString = '{{track.name|escape}} {{track.artist|escape}}';
+                    length = Playlist.songs.push({'artist':'{{track.artist|escape}}','name':'{{track.name|escape}}', 'q':'{{q}}'});
+                    id = length-1;
+                    $('#'+id).bind('click',function() {
+                        Playlist.open($(this).attr('id'));
+                    });
+                });
+            </script>
+            <li class="vertical_item"><a class="recent_song" id="{{forloop.counter0}}" href="#{{track.artist}}-{{track.name}}">{{track.artist}} - {{track.name}}</a></li>
+
+        {% empty %}
+            <li class="vertical_item">No songs found...</li>
+        {% endfor %}
+        </ul>
+        <script type="text/javascript">
+            /*
+            $(document).ready(function() {
+                Playlist.open(0);
+            });
+            */
+        </script>
+    </div>
+</div>
+
