@@ -11,7 +11,7 @@ a.now_playing { color:#ee3333!important; background:#dddd55!important; }
 #lastfm_friends_container { width:150px; overflow:hidden; } 
 #lastfm_neighbours_container { width:150px; overflow:hidden; } 
 #lastfm_recents_container { width:250px; overflow:hidden; } 
-ul#recent_list a,ul#track_list a { padding:3px; text-decoration:none; color:#ffffff; background:#555555; float:left;width:100%; }
+ul#recent_list a,ul#track_list a { padding:5px; text-decoration:none; color:#ffffff; background:#555555; float:left;width:100%; }
 ul#recent_list a:hover, ul#track_list a:hover { background:#ff3333; } 
 #youtube_container { height:352px; float:right;} 
 h1 { margin:0px; font-size:20px;} 
