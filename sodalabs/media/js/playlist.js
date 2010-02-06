@@ -25,7 +25,6 @@ var Playlist = {
                     $('#radio_form').css('display','block');
                     track = $('#radio_form').children().filter('input[name|=lastfm_track]');
                     track.attr('value',jsonData['lastfm_track_id'])
-                    console.log('track : ' + track.attr('id'));
                 } else { 
                     Playlist.markSongAsErred(songId);
                     Playlist.goToNext();
