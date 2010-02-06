@@ -81,5 +81,8 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.sites',
     'sodalabs.assets',
-    'sodalabs.playlistia',
+    'sodalabs.playlist',
+    'sodalabs.jukebox',
+    'sodalabs.accounts',
+    'sodalabs.lastfm'
 )
