@@ -1,6 +1,7 @@
 import urllib, traceback
 from lxml.html import fromstring
 from lxml import etree
+from sodalabs.playlist.helpers import ordered_unique
 
 error_path = etree.XPath('//error')
 track_path = etree.XPath('//track')
@@ -13,14 +14,11 @@ def get_tracks(doc):
     for track in tracks:
         artist = track.find('artist').text_content()
         name = track.find('name').text_content()
-        lastfm_tracks.append((name,artist))
+        lastfm_tracks.append({'name':name,'artist':artist})
 
-    lastfm_tracks = set(lastfm_tracks)
-    tracks = []
-    for track in lastfm_tracks:
-        tracks.append({'name':track[0],'artist':track[1]})
+    lastfm_tracks = ordered_unique(lastfm_tracks)
 
-    return tracks
+    return lastfm_tracks
 
 def get_similar_tracks(doc):
     tracks = track_path(doc)
@@ -30,14 +28,11 @@ def get_similar_tracks(doc):
         artist_obj = track.find('artist')
         artist_name = artist_obj.find('name').text_content()
         name = track.find('name').text_content()
-        lastfm_tracks.append((name,artist_name))
+        lastfm_tracks.append({'name':name,'artist':artist_name})
 
-    lastfm_tracks = set(lastfm_tracks)
-    tracks = []
-    for track in lastfm_tracks:
-        tracks.append({'name':track[0],'artist':track[1]})
+    lastfm_tracks = ordered_unique(lastfm_tracks)
 
-    return tracks
+    return lastfm_tracks
 
 
 

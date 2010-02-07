@@ -11,14 +11,16 @@ function onYouTubePlayerReady(playerId) {
 var Playlist = {
     songs : new Array(),
     currentSong : false,
+    lastSongLogged : false,
     player : false,
     
     saveSongAsPlayed : function(songId,lastFMTrackSongId) {
-        if(songId == Playlist.currentSong) {
+        if(songId == Playlist.currentSong && songId != Playlist.lastSongLogged) {
             $.post('/accounts/song_played/' + lastFMTrackSongId+'/', function(data) {
                     jsonData = JSON.parse(data);
                     if(jsonData['status']=='ok') {
                         console.log('song_played result success');
+                        Playlist.lastSongLogged = songId;
                     } else { 
                         console.log('song_played result failed because : ' + jsonData['message']);
                     }

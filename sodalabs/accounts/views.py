@@ -14,8 +14,9 @@ from sodalabs import settings
 from sodalabs.accounts.forms import AuthenticationForm,UserCreationForm
 from sodalabs.rest_ws.helpers import ResponseBadRequest
 from sodalabs.accounts.models import Musiphile,PlayHistory
+from sodalabs.accounts.helpers import save_session_playhistory
 from sodalabs.jukebox.models import LastFMTrackSong
-
+from sodalabs.playlist.helpers import ordered_unique
 
 
 @login_required
@@ -29,7 +30,12 @@ def profile(request, username=None):
     tracks = []
     for play in songs_played:
         lastfm_track = play.song.lastfm_track
-        tracks.append({'name':lastfm_track.name,'artist':lastfm_track.artist})
+        tracks.append({'name':lastfm_track.name,'artist':lastfm_track.artist,'created_at':play.created_at})
+
+    tracks = ordered_unique(tracks)
+
+    #tracks.reverse()
+
     return direct_to_template(request, 'accounts/profile.html', {'playlist_title':'scrobbled on odosloop', 'lastfm_tracks': tracks, 'username':username})
 
 def anonymous(request):
@@ -37,6 +43,8 @@ def anonymous(request):
     tracks = []
     for song in songs_played:
         tracks.append({'name':song['name'],'artist':song['artist']})
+
+    tracks = ordered_unique(tracks)
 
     return direct_to_template(request, 'accounts/profile.html', {'playlist_title':'scrobbled on odosloop','lastfm_tracks':tracks})
 
@@ -92,8 +100,8 @@ def signup(request, template_name='accounts/signup.html',redirect_field_name='ne
                 if request.session.test_cookie_worked():
                     request.session.delete_test_cookie()
 
-                # @TODO save playlists here 
-
+                save_session_playhistory(request,request.user)
+                
                 return HttpResponseRedirect(redirect_to)
         elif action=='register':
             login_form = AuthenticationForm(request)
@@ -117,6 +125,8 @@ def signup(request, template_name='accounts/signup.html',redirect_field_name='ne
                 user = authenticate(musiphile_email=user.musiphile_email, password=request.POST['password1'])
                 from django.contrib.auth import login
                 login(request,user)
+                
+                save_session_playhistory(request,user)
                 return HttpResponseRedirect(redirect_to)
         else:
             return ResponseBadRequest()
