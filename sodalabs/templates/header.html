@@ -7,9 +7,9 @@
 
 <div id="login_container">
     {% if user.is_authenticated %}
-        {{user.username}} <a href="/accounts/logout">Logout</a>
+        <a href="/accounts/{{user.username}}">{{user.username}}</a> | <a href="/accounts/logout">logout</a>
     {% else %}
-        <a href="/accounts/signup?next={{request.get_full_path}}">sign in</a>
+        <a href="/accounts/me">me</a> | <a href="/accounts/signup?next={{request.get_full_path}}">sign in</a>
     {% endif %}
 </div>
 

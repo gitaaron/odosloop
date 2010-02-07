@@ -69,7 +69,7 @@ def open(request):
             song_played = PlayHistory(musiphile=request.user,song=lastfm_track_song) 
             song_played.save()
 
-        dict = {'status':'ok', 'video_id':entry.id.text.split('/').pop(), 'video_title':entry.title.text,'song_id':song.id,'lastfm_track_id':track.id}
+        dict = {'status':'ok', 'video_id':entry.id.text.split('/').pop(), 'video_title':entry.title.text,'song_id':song.id,'lastfm_track_id':track.id,'lastfm_track_song_id':lastfm_track_song.id}
 
     return HttpResponse(json.dumps(dict), content_type="application/json")
 

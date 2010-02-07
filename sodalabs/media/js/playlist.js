@@ -12,6 +12,19 @@ var Playlist = {
     songs : new Array(),
     currentSong : false,
     player : false,
+    
+    saveSongAsPlayed : function(songId,lastFMTrackSongId) {
+        if(songId == Playlist.currentSong) {
+            $.post('/accounts/song_played/' + lastFMTrackSongId+'/', function(data) {
+                    jsonData = JSON.parse(data);
+                    if(jsonData['status']=='ok') {
+                        console.log('song_played result success');
+                    } else { 
+                        console.log('song_played result failed because : ' + jsonData['message']);
+                    }
+            });
+        } 
+    },
 
     open : function(songId) {
         songId = parseInt(songId);
@@ -25,6 +38,7 @@ var Playlist = {
                     $('#radio_form').css('display','block');
                     track = $('#radio_form').children().filter('input[name|=lastfm_track]');
                     track.attr('value',jsonData['lastfm_track_id'])
+                    setTimeout("Playlist.saveSongAsPlayed(" + escape(songId) + ","+escape(jsonData['lastfm_track_song_id'])+")", 1000);
                 } else { 
                     Playlist.markSongAsErred(songId);
                     Playlist.goToNext();

@@ -3,7 +3,11 @@
 {% block content %}
 {% include 'includes/player.html' %}
 <div id="lastfm_container">
-<h1>{{username}} on lastfm</h1>
+    {% if username %}
+    <h1>{{username}}</h1>
+    {% else %}
+    <h1>Hey anonymous, why don't you <a href="/accounts/login">log in</a> to save this list.</h1>
+    {% endif %}
 <div style="clear:both;"></div>
 {% include 'includes/playlist.html' %}
 {% endblock %}

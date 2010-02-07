@@ -1,5 +1,6 @@
 # Create your views here.
-
+import datetime
+import simplejson as json
 from django.http import HttpResponse,HttpResponseRedirect,Http404
 from django.views.generic.simple import direct_to_template
 from django.shortcuts import render_to_response
@@ -13,6 +14,8 @@ from sodalabs import settings
 from sodalabs.accounts.forms import AuthenticationForm,UserCreationForm
 from sodalabs.rest_ws.helpers import ResponseBadRequest
 from sodalabs.accounts.models import Musiphile,PlayHistory
+from sodalabs.jukebox.models import LastFMTrackSong
+
 
 
 @login_required
@@ -27,41 +30,36 @@ def profile(request, username=None):
     for play in songs_played:
         lastfm_track = play.song.lastfm_track
         tracks.append({'name':lastfm_track.name,'artist':lastfm_track.artist})
-    """
-    #@TODO error templates do not exist anymore
-    if not username:
-        username = request.GET.get('username',None)
-    if not username:
-        return direct_to_template(request,'playlist/index.html',{'message':'Your request is missing a required paramater.'})
-    # compile lastfm list of name,artist 
-
-    doc = make_lastfm_request('user.getrecenttracks',{'limit':'100','user':username})
-    if not doc:
-        return direct_to_template(request, 'playlist/index.html',{'message':'A problem occured accessing the last.fm api.'})
-    errors = error_path(doc)
-    if errors:
-        return direct_to_template(request, 'playlist/index.html',{'message':errors[0].text_content()})
-
-    lastfm_recents = []
-    lastfm_recents = get_tracks(doc) 
-
-    lastfm_friends = []
-    doc = make_lastfm_request('user.getfriends',{'user':username})
-    users = user_path(doc)
-    for user in users:
-        lastfm_friends.append({'name':user.find('name').text_content()})
-
-    lastfm_neighbours = []
-    doc = make_lastfm_request('user.getneighbours',{'user':username})
-    users = user_path(doc)
-    for user in users:
-        lastfm_neighbours.append({'name':user.find('name').text_content()})
-    """
-
     return direct_to_template(request, 'accounts/profile.html', {'playlist_title':'scrobbled on odosloop', 'lastfm_tracks': tracks, 'username':username})
 
+def anonymous(request):
+    songs_played = request.session.get('playhistory',[])
+    tracks = []
+    for song in songs_played:
+        tracks.append({'name':song['name'],'artist':song['artist']})
+
+    return direct_to_template(request, 'accounts/profile.html', {'playlist_title':'scrobbled on odosloop','lastfm_tracks':tracks})
+
+def flush(request):
+    request.session.flush()
+    return HttpResponse('ok')
+
+def song_played(request,lastfm_track_song_id):
+    try:
+        lastfm_track_song = LastFMTrackSong.objects.get(id=lastfm_track_song_id)
+    except LastFMTrackSong.DoesNotExist:
+        return HttpResponse(json.dumps({'status':'failed','message':'Could not find song for specified id : ' + lastfm_track_song_id}),content_type="application/json")
 
 
+    if request.user.is_authenticated():
+        song_played = PlayHistory(musiphile=request.user,song=lastfm_track_song)
+        song_played.save()
+    else:
+        lastfm_track = lastfm_track_song.lastfm_track
+        playhistory = request.session.get('playhistory',[])
+        playhistory.append({'lastfm_track_song_id':lastfm_track_song_id,'artist':lastfm_track.artist,'name':lastfm_track.name, 'date':datetime.datetime.now()})
+        request.session['playhistory'] = playhistory
+    return HttpResponse(json.dumps({'status':'ok'}),content_type="application/json")
 
 
 def logout(request):

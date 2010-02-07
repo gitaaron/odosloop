@@ -19,7 +19,6 @@ urlpatterns = patterns('',
     (r'^admin/', include(admin.site.urls)),
 
     (r'^$', include('sodalabs.home.urls')),
-    (r'^playlist/', include('sodalabs.playlist.urls')),
     (r'^radio/', include('sodalabs.radio.urls')),
     (r'^jukebox/', include('sodalabs.jukebox.urls')),
     (r'^lastfm/', include('sodalabs.lastfm.urls')),
