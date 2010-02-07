@@ -38,7 +38,7 @@ var Playlist = {
                     $('#radio_form').css('display','block');
                     track = $('#radio_form').children().filter('input[name|=lastfm_track]');
                     track.attr('value',jsonData['lastfm_track_id'])
-                    setTimeout("Playlist.saveSongAsPlayed(" + escape(songId) + ","+escape(jsonData['lastfm_track_song_id'])+")", 1000);
+                    setTimeout("Playlist.saveSongAsPlayed(" + escape(songId) + ","+escape(jsonData['lastfm_track_song_id'])+")", 20000);
                 } else { 
                     Playlist.markSongAsErred(songId);
                     Playlist.goToNext();
