@@ -11,7 +11,7 @@ def index(request):
         tracks = get_tracks(doc) 
         playlist_title = 'search results for : ' + q
     else:
-        songs_played = PlayHistory.objects.all().order_by('created_at').reverse()[0:15]
+        songs_played = PlayHistory.objects.all().order_by('created_at').reverse()[0:50]
         tracks = []
         for play in songs_played:
             lastfm_track = play.song.lastfm_track
