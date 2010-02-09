@@ -20,4 +20,4 @@ def index(request):
         tracks = ordered_unique(tracks)
         playlist_title = 'recently listened to'
 
-    return direct_to_template(request, 'index.html', {'playlist_title':'music search results', 'lastfm_tracks':tracks, 'q':q}) 
+    return direct_to_template(request, 'index.html', {'playlist_title':playlist_title, 'lastfm_tracks':tracks, 'q':q}) 
