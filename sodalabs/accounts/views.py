@@ -17,6 +17,7 @@ from sodalabs.accounts.models import Musiphile,PlayHistory
 from sodalabs.accounts.helpers import save_session_playhistory
 from sodalabs.jukebox.models import LastFMTrackSong
 from sodalabs.playlist.helpers import ordered_unique
+from sodalabs.playlist.models import PlaylistUser
 
 
 @login_required
@@ -34,9 +35,9 @@ def profile(request, username=None):
 
     tracks = ordered_unique(tracks)
 
-    #tracks.reverse()
+    user_playlists = PlaylistUser.objects.filter(user=musiphile)
 
-    return direct_to_template(request, 'accounts/profile.html', {'playlist_title':'scrobbled on odosloop', 'lastfm_tracks': tracks, 'username':username})
+    return direct_to_template(request, 'accounts/profile.html', {'playlist_title':'scrobbled on odosloop', 'lastfm_tracks': tracks, 'user_playlists':user_playlists, 'username':username})
 
 def anonymous(request):
     songs_played = request.session.get('playhistory',[])

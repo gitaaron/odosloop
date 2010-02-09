@@ -37,9 +37,15 @@ var Playlist = {
                 jsonData = JSON.parse(data);
                 if(jsonData['status']=='ok') {
                     Playlist.play(jsonData['video_id'], jsonData['video_title']);
+                    // set radio form
                     $('#radio_form').css('display','block');
-                    track = $('#radio_form').children().filter('input[name|=lastfm_track]');
-                    track.attr('value',jsonData['lastfm_track_id'])
+                    radio_track = $('#radio_form').children().filter('input[name|=lastfm_track]');
+                    radio_track.attr('value',jsonData['lastfm_track_id'])
+                    // set add to playlist form
+                    $('#playlist_form').css('display','block');
+                    playlist_track_song = $('#playlist_form').children().filter('input[name|=lastfm_track_song]');
+                    playlist_track_song.attr('value',jsonData['lastfm_track_song_id']); 
+
                     setTimeout("Playlist.saveSongAsPlayed(" + escape(songId) + ","+escape(jsonData['lastfm_track_song_id'])+")", 20000);
                 } else { 
                     Playlist.markSongAsErred(songId);

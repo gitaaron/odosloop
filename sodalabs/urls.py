@@ -22,6 +22,7 @@ urlpatterns = patterns('',
     (r'^radio/', include('sodalabs.radio.urls')),
     (r'^jukebox/', include('sodalabs.jukebox.urls')),
     (r'^lastfm/', include('sodalabs.lastfm.urls')),
+    (r'^playlist/', include('sodalabs.playlist.urls')),
 
     # user account 
     (r'^accounts/', include('sodalabs.accounts.urls')),

@@ -9,5 +9,16 @@
     <h1>Hey anonymous, why don't you <a href="/accounts/login">log in</a> to save this list.</h1>
     {% endif %}
 <div style="clear:both;"></div>
+<div id="user_playlist_container" class="list_container">
+    <h3>playlists</h3>
+    <ul id="user_playlist" class="vertical_list">
+        {% for user_playlist in user_playlists %}
+        <li class="vertical_item"><a href="/playlist/get/{{user_playlist.user.username}}/{{user_playlist.playlist.name}}">{{user_playlist.playlist.name}}</a></li>
+        {% empty %}
+            <li>No playlists found...</li>
+        {% endfor %}
+    </ul>
+</div>
+
 {% include 'includes/playlist.html' %}
 {% endblock %}

@@ -4,7 +4,7 @@ from django.views.generic.simple import direct_to_template
 from sodalabs.lastfm import make_lastfm_request,get_similar_tracks
 from sodalabs.lastfm.models import Track
 
-def recommend(request):
+def get_similar(request):
     lastfm_track_id = request.GET.get('lastfm_track',False)
     if not lastfm_track_id:
         raise Http404()

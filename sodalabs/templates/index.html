@@ -4,13 +4,12 @@
 {% endblock %}
 
 {% block content%}
-{% if q %}
-    {% if lastfm_tracks %}
-        {% include 'includes/player.html' %}
-        {% include 'includes/playlist.html' %}
-    {% else %}
-    <p>No results for search : {{q}}</p>
-    {% endif %}
+
+{% if lastfm_tracks %}
+    {% include 'includes/player.html' %}
+    {% include 'includes/playlist.html' %}
+{% else %}
+<p>No results for search : {{q}}</p>
 {% endif %}
 
 {% endblock %}
