@@ -8,25 +8,36 @@ from sodalabs.playlist.models import PlaylistUser,Playlist,PlaylistSong
 from sodalabs.playlist.helpers import ordered_unique
 
 def get(request, username, name):
-    try:
-        musiphile = Musiphile.objects.get(username=username)
-    except Musiphile.DoesNotExist:
-        raise Http404()
+    if username=='me':
+        lastfm_track_songs = request.session.get('playlist',[])
+        tracks = []
+        for song in lastfm_track_songs:
+            lastfm_track = song.lastfm_track
+            tracks.append({'name':lastfm_track.name,'artist':lastfm_track.artist})
 
-    try:
-        playlist_user = PlaylistUser.objects.get(playlist__name=name, user=musiphile)
-    except PlaylistUser.DoesNotExist:
-        raise Http404()
+        playlist_title = 'Favorites'
+    else:
+        try:
+            musiphile = Musiphile.objects.get(username=username)
+        except Musiphile.DoesNotExist:
+            raise Http404()
 
-    tracks = []
-    playlist_songs = playlist_user.playlist.playlistsong_set.all()
-    for playlist_song in playlist_songs:
-        lastfm_track = playlist_song.lastfm_track_song.lastfm_track
-        tracks.append({'name':lastfm_track.name, 'artist':lastfm_track.artist})
+        try:
+            playlist_user = PlaylistUser.objects.get(playlist__name=name, user=musiphile)
+        except PlaylistUser.DoesNotExist:
+            raise Http404()
+
+        tracks = []
+        playlist_songs = playlist_user.playlist.playlistsong_set.all()
+        for playlist_song in playlist_songs:
+            lastfm_track = playlist_song.lastfm_track_song.lastfm_track
+            tracks.append({'name':lastfm_track.name, 'artist':lastfm_track.artist})
+
+        playlist_title = playlist_user.playlist.name
 
     tracks = ordered_unique(tracks)
 
-    return direct_to_template(request, 'accounts/playlist.html', {'playlist_title':playlist_user.playlist.name, 'lastfm_tracks':tracks})
+    return direct_to_template(request, 'accounts/playlist.html', {'playlist_title':playlist_title, 'lastfm_tracks':tracks})
 
 def add(request):
     if request.method!="POST":
@@ -40,6 +51,7 @@ def add(request):
         lastfm_track_song = LastFMTrackSong.objects.get(id=lastfm_track_song_id)
     except LastFMTrackSong.DoesNotExist:
         raise Http404
+
 
     if request.user.is_authenticated():
         musiphile = Musiphile.objects.get(id=request.user.id)
@@ -60,5 +72,19 @@ def add(request):
             # add song to playlist
             playlist_song = PlaylistSong(lastfm_track_song=lastfm_track_song,playlist=playlist_user.playlist)
             playlist_song.save()
+        return HttpResponseRedirect('/playlist/get/'+request.user.username+'/'+playlist_user.playlist.name)
+    else:
+        playlist = request.session.get('playlist',[])
+        was_added=False
+        for item in playlist:
+            if item==lastfm_track_song.id:
+                was_added=True
+                break
+        if not was_added:
+            playlist.append(lastfm_track_song)
 
-    return HttpResponseRedirect('/playlist/get/'+request.user.username+'/'+playlist_user.playlist.name)
+        request.session['playlist'] = playlist
+        
+        return HttpResponseRedirect('/playlist/get/me/Favorites')
+
+

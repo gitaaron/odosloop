@@ -1,5 +1,5 @@
 # Create your views here.
-from django.http import Http404
+from django.http import Http404,HttpResponse
 from django.views.generic.simple import direct_to_template
 from sodalabs.lastfm import make_lastfm_request,get_similar_tracks
 from sodalabs.lastfm.models import Track

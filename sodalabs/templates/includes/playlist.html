@@ -5,8 +5,8 @@
         {% for track in lastfm_tracks %}
             <script type="text/javascript">
                 $(document).ready(function() {
-                    qString = '{{track.name|escape}} {{track.artist|escape}}';
-                    length = Playlist.songs.push({'artist':'{{track.artist|escape}}','name':'{{track.name|escape}}', 'q':'{{q}}'});
+                    qString = '{{track.name|escapejs}} {{track.artist|escapejs}}';
+                    length = Playlist.songs.push({'artist':'{{track.artist|escapejs}}','name':'{{track.name|escapejs}}', 'q':'{{q}}'});
                     id = length-1;
                     $('#'+id).bind('click',function() {
                         Playlist.open($(this).attr('id'));

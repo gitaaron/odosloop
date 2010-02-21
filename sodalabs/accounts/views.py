@@ -45,9 +45,12 @@ def anonymous(request):
     for song in songs_played:
         tracks.append({'name':song['name'],'artist':song['artist']})
 
+    # create a dummy list of playlist
+    user_playlists = [ {'user':{'username':'me'}, 'playlist':{'name':'Favorites'}}]
+
     tracks = ordered_unique(tracks)
 
-    return direct_to_template(request, 'accounts/profile.html', {'playlist_title':'scrobbled on odosloop','lastfm_tracks':tracks})
+    return direct_to_template(request, 'accounts/profile.html', {'playlist_title':'scrobbled on odosloop','lastfm_tracks':tracks, 'user_playlists':user_playlists})
 
 def flush(request):
     request.session.flush()
