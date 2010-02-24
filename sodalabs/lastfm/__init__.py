@@ -14,7 +14,7 @@ def get_tracks(doc):
     for track in tracks:
         artist = track.find('artist').text_content()
         name = track.find('name').text_content()
-        lastfm_tracks.append({'name':name,'artist':artist})
+        lastfm_tracks.append({'name':_encode(name),'artist':_encode(artist)})
 
     lastfm_tracks = ordered_unique(lastfm_tracks)
 
@@ -28,14 +28,15 @@ def get_similar_tracks(doc):
         artist_obj = track.find('artist')
         artist_name = artist_obj.find('name').text_content()
         name = track.find('name').text_content()
-        lastfm_tracks.append({'name':name,'artist':artist_name})
+        lastfm_tracks.append({'name':_encode(name),'artist':_encode(artist_name)})
 
     lastfm_tracks = ordered_unique(lastfm_tracks)
 
     return lastfm_tracks
 
 
-
+def _encode(str):
+    return str.encode('iso-8859-15','replace')
 
 
 def _get_lastfm_api_url(method,params):
