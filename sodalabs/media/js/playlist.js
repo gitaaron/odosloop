@@ -11,15 +11,37 @@ function onYouTubePlayerReady(playerId) {
 var Playlist = {
     songs : new Array(),
     currentSong : false,
+    currentSongOpened : false,
     lastSongLogged : false,
     player : false,
-    
+
+    loadSearch : function(q) {
+        $('#search_container').html('<h3>loading...</h3>');
+        $.get('/lastfm/search', {'q':unescape(q)}, function(data) 
+        {
+            $('#search_container').html(data);
+        });
+    }, 
+
+    loadFeed : function() {
+        $('#feed_container').html('<h3>loading...</h3>');
+        $.get('/home/feed', function(data) {
+            $('#feed_container').html(data);
+        });
+    },
+
+    loadRadio: function(r) {
+        $('#radio_container').html('<h3>loading...</h3>');
+        $.get('/radio/ajax_get_similar', {'lastfm_track':r}, function(data) {
+                $('#radio_container').html(data);
+            });
+    },
+
     saveSongAsPlayed : function(songId,lastFMTrackSongId) {
         if(songId == Playlist.currentSong && songId != Playlist.lastSongLogged) {
             $.post('/accounts/song_played/' + lastFMTrackSongId+'/', function(data) {
                     jsonData = JSON.parse(data);
                     if(jsonData['status']=='ok') {
-                        console.log('song_played result success');
                         Playlist.lastSongLogged = songId;
                     } else { 
                         console.log('song_played result failed because : ' + jsonData['message']);
@@ -28,14 +50,16 @@ var Playlist = {
         } 
     },
 
-    open : function(songId) {
+    open : function(playlist_id, songId) {
         songId = parseInt(songId);
-        song = Playlist.songs[songId];
+        song = Playlist.songs[playlist_id][songId];
 
         Playlist.currentSong = songId;
-        $.get('/jukebox/open/', song, function(data) {
+         
+        $.get('/jukebox/get_closest_video/', song, function(data) {
                 jsonData = JSON.parse(data);
                 if(jsonData['status']=='ok') {
+                    Playlist.currentSongOpened = jsonData;
                     Playlist.play(jsonData['video_id'], jsonData['video_title']);
                     // set radio form
                     $('#radio_form').css('display','block');
@@ -55,6 +79,20 @@ var Playlist = {
         return false;
     },
 
+    radio : function(playlist_id, songId) {
+        songId = parseInt(songId);
+        song = Playlist.songs[playlist_id][songId];
+        Playlist.currentSong = songId;
+        $.get('/jukebox/get_lastfm_track', song, function(data) {
+            jsonData = JSON.parse(data);
+            if(jsonData['status'] =='ok') {
+                Radio.open(jsonData['lastfm_track_id']);
+            } else {
+                Playlist.markSongAsErred(songId);
+            }
+        });
+    },
+
     markSongAsErred : function(songId) {
         elem = Playlist.getElemById(songId);
         elem.html('(error) ' + elem.html());
@@ -65,9 +103,10 @@ var Playlist = {
         * Simple player embed
         */
         songId = Playlist.currentSong;
-        $('.recent_song').attr('class','recent_song');
+        $('.now_playing').removeClass('now_playing');
         elem = Playlist.getElemById(songId);
-        $(elem).attr('class','recent_song now_playing');
+        elem.addClass('now_playing');
+
         $('#title').html(title);
         if(Playlist.player) {
             Playlist.player.loadVideoById(id);
@@ -88,7 +127,8 @@ var Playlist = {
     },
 
     getElemById : function(id) {
-        return $('#'+id);
+        name = DocString.get()['menu'];
+        return $('#'+name+'_item_'+id);
     },
 
     onPlayerStateChange : function(state) {
@@ -103,7 +143,7 @@ var Playlist = {
     
     goToNext : function() {
         songId = Playlist.currentSong+1;
-        Playlist.open(songId);
+        Playlist.open(DocString.get()['menu'], songId);
     }
 
 }

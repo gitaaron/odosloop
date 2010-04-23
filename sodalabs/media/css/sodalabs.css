@@ -7,17 +7,24 @@ ul.vertical_list li.vertical_item { float:left; clear:both; width:100%; }
 /* old stuffs */
 div#videoDiv { width:480px; height:295px; background:#efcf22; }
 h1#title { height:45px;width:480px; overflow:hidden; }
-a.now_playing { color:#ee3333!important; background:#dddd55!important; } 
 #lastfm_container li.vertical_item { font-size:14px;} 
-#lastfm_friends_container,#lastfm_neighbors_container, #user_playlist_container { width:150px; overflow:hidden; } 
+#lastfm_friends_container,#lastfm_neighbors_container, #user_playlist_container { overflow:hidden; } 
 #lastfm_recents_container { width:250px; overflow:hidden; } 
-ul#recent_list a,ul#track_list a { padding:5px; text-decoration:none; color:#ffffff; background:#357545; float:left;width:100%; }
-ul#recent_list a:hover, ul#track_list a:hover { background:#ff3333; } 
 #youtube_container { height:352px; float:right;} 
 h1 { margin:0px; font-size:20px;} 
-.lastfm_list_container,.list_container { float:left; width:250px; } 
-#lastfm_container { float:left; } 
+#lastfm_container,.playlist_container { float:left; } 
 
+li.now_playing,a.selected { color:#992288!important; background:#dddd55!important; } 
+ul#menu_list li, ul#recent_list li,ul#track_list li {color:#ffffff; } 
+ul#menu_list a, ul#recent_list a,ul#track_list a { padding:5px; text-decoration:none; float:left; }
+ul#menu_list .action:hover, ul#track_list .action:hover { background:#ff3333; } 
+a.recent_song { width:180px; }
+
+
+/* index */
+#menu_container { float:left; margin-right:10px; width:80px; } 
+.lastfm_list_container,.list_container { float:left; margin-right:20px;} 
+.playlist_container { width:350px; } 
 
 /* header */
 div#header { float:left; width:100%; }

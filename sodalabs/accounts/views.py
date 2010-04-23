@@ -37,7 +37,7 @@ def profile(request, username=None):
 
     user_playlists = PlaylistUser.objects.filter(user=musiphile)
 
-    return direct_to_template(request, 'accounts/profile.html', {'playlist_title':'scrobbled on odosloop', 'lastfm_tracks': tracks, 'user_playlists':user_playlists, 'username':username})
+    return direct_to_template(request, 'accounts/profile.html', {'playlist_id':'feed', 'playlist_title':'scrobbled on odosloop', 'lastfm_tracks': tracks, 'user_playlists':user_playlists, 'username':username})
 
 def anonymous(request):
     songs_played = request.session.get('playhistory',[])
@@ -50,7 +50,7 @@ def anonymous(request):
 
     tracks = ordered_unique(tracks)
 
-    return direct_to_template(request, 'accounts/profile.html', {'playlist_title':'scrobbled on odosloop','lastfm_tracks':tracks, 'user_playlists':user_playlists})
+    return direct_to_template(request, 'accounts/profile.html', {'playlist_id':'feed', 'playlist_title':'scrobbled on odosloop','lastfm_tracks':tracks, 'user_playlists':user_playlists})
 
 def flush(request):
     request.session.flush()

@@ -1,5 +1,6 @@
 from django.conf.urls.defaults import *
 
 urlpatterns = patterns('sodalabs.jukebox.views',
-        (r'^open/$', 'open'),
+        (r'^get_closest_video/$', 'get_closest_video'),
+        (r'^get_lastfm_track/$', 'get_lastfm_track'),
 )

@@ -5,12 +5,26 @@
 
 {% block content%}
 
-{% if lastfm_tracks %}
-    {% include 'includes/player.html' %}
-    {% include 'includes/playlist.html' %}
-{% else %}
-<p>No results for search : {{q}}</p>
-{% endif %}
+{% include 'includes/player.html' %}
+
+<div id="menu_container">
+    <h3>menu</h3>
+    <ul id="menu_list" class="vertical_list">
+        <li class="vertical_item"><a id="feed" class="action" >feed</a></li>
+        <li class="vertical_item"><a id="search" class="action" >search</a></li>
+        <li class="vertical_item"><a id="radio" class="action" >radio</a></li>
+    </ul>
+</div>
+
+<div id="feed_container" class="playlist_container" style="display:none;">
+    <h3>No songs played yet.</h3> 
+</div>
+<div id="search_container" class="playlist_container" style="display:none;">
+    <h3>No search specified.</h3>
+</div>
+<div id="radio_container" class="playlist_container" style="display:none;">
+    <h3>In order to make use of the radio feature, you must start listening to a song so we have something to generate similar songs from.</h3>
+</div>
 
 {% endblock %}
 

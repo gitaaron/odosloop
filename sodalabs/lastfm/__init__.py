@@ -36,13 +36,14 @@ def get_similar_tracks(doc):
 
 
 def _encode(str):
-    return str.encode('iso-8859-15','replace')
+    #return str.encode('iso-8859-15','replace')
+    return str.encode('utf-8')
 
 
 def _get_lastfm_api_url(method,params):
     url = 'http://ws.audioscrobbler.com/2.0/?method=%s&api_key=575da82dcdf635b030df7efa4386e351' % method
     for key in params:
-        url+='&'+key+'='+urllib.quote(params[key])
+        url+='&'+key+'='+urllib.quote(_encode(params[key]))
     return url 
 
 def make_lastfm_request(method,params={}):

@@ -2,6 +2,7 @@
 from sodalabs.rest_ws.helpers import ResponseNotAllowed,ResponseBadRequest,HttpResponse
 from django.http import Http404,HttpResponseRedirect
 from django.views.generic.simple import direct_to_template
+from django.template.defaultfilters import slugify
 from sodalabs.jukebox.models import LastFMTrackSong
 from sodalabs.accounts.models import Musiphile
 from sodalabs.playlist.models import PlaylistUser,Playlist,PlaylistSong
@@ -37,7 +38,7 @@ def get(request, username, name):
 
     tracks = ordered_unique(tracks)
 
-    return direct_to_template(request, 'accounts/playlist.html', {'playlist_title':playlist_title, 'lastfm_tracks':tracks})
+    return direct_to_template(request, 'accounts/playlist.html', {'playlist_id':playlist_title.slugify(), 'playlist_title':playlist_title, 'lastfm_tracks':tracks})
 
 def add(request):
     if request.method!="POST":

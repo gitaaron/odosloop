@@ -11,7 +11,31 @@ from sodalabs.accounts.models import PlayHistory
 
 YOUTUBE_API_KEY = 'AI39si4G2-0d2C5E98vAfsM8RT5Z7h8md7wClPvY_Jhfu8oyonkYkjCuA_DBJehHGtPzb6UdIspQhf7M3Cc6_NW2pTT3t4uZ4A'
 
-def open(request):
+def _create_track(name,artist,q):
+    try:
+        track = Track.objects.get(name=name,artist=artist)
+    except Track.DoesNotExist:
+        track = Track(name=name,artist=artist,search=q)
+        track.save()
+
+    return track
+    
+
+def get_lastfm_track(request):
+    name = request.GET.get('name',False)
+    artist = request.GET.get('artist',False)
+    q = request.GET.get('q','')
+    if not name:
+        return HttpResponse(json.dumps({'status':'failed','message':'name missing'}),content_type="application/json")
+    if not artist:
+        return HttpResponse(json.dumps({'status':'failed','message':'artist missing'}),content_type="application/json")
+   
+    track = _create_track(name,artist,q) 
+    dict = {'status':'ok', 'lastfm_track_id':track.id}
+
+    return HttpResponse(json.dumps(dict), content_type="application/json")
+
+def get_closest_video(request):
     client = gdata.youtube.service.YouTubeService()
     client.developer_key = YOUTUBE_API_KEY
     query = gdata.youtube.service.YouTubeVideoQuery()
@@ -20,16 +44,12 @@ def open(request):
     q = request.GET.get('q','')
     if not name:
         return HttpResponse(json.dumps({'status':'failed','message':'name missing'}),content_type="application/json")
+    if not artist:
+        return HttpResponse(json.dumps({'status':'failed','message':'artist missing'}),content_type="application/json")
 
-    if artist:
-        # see if lastfm track already exists
-        try:
-            track = Track.objects.get(name=name,artist=artist)
-        except Track.DoesNotExist:
-            track = Track(name=name,artist=artist,search=q)
-            track.save()
-
-        search = artist + ' - ' + name
+    # see if lastfm track already exists
+    track = _create_track(name,artist,q)
+    search = artist + ' - ' + name
 
 
     query.vq = _unescape(urllib.unquote(search))

@@ -1,7 +1,17 @@
 # Create your views here.
+from django.http import Http404
 from django.views.generic.simple import direct_to_template
 from sodalabs.lastfm import make_lastfm_request,get_tracks,error_path,user_path
 
+def search(request):
+    q = request.GET.get('q', False)
+    if q:
+        doc = make_lastfm_request('track.search',{'track':q})
+        tracks = get_tracks(doc)
+        playlist_title = 'search results for : ' + q
+        return direct_to_template(request, 'includes/playlist.html', {'playlist_id':'search', 'playlist_title':playlist_title, 'lastfm_tracks':tracks})
+    else:
+        raise Http404()
 
 def profile(request, username=None):
     """
@@ -36,8 +46,7 @@ def profile(request, username=None):
     for user in users:
         lastfm_neighbours.append({'name':user.find('name').text_content()})
 
-    return direct_to_template(request, 'lastfm/profile.html', {'playlist_title':'recently scrobbled', 'lastfm_tracks': lastfm_recents, 'lastfm_friends':lastfm_friends, 'lastfm_neighbours':lastfm_neighbours, 'username':username})
-
+    return direct_to_template(request, 'lastfm/profile.html', {'playlist_id':'feed', 'playlist_title':'recently scrobbled', 'lastfm_tracks': lastfm_recents, 'lastfm_friends':lastfm_friends, 'lastfm_neighbours':lastfm_neighbours, 'username':username})
 
 
 
