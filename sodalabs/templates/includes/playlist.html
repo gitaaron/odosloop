@@ -19,7 +19,6 @@
                         id = $(this).attr('id').split('_')[2];
                         Playlist.radio('{{playlist_id}}',id);
                         song = Playlist.songs['{{playlist_id}}'][id];
-                        alert('id : ' + id + ' track_id : ' + song['lastfm_track_id'] + ' playlist_id : {{playlist_id}}');
 
                         Radio.open(song['lastfm_track_id']);
                     });
