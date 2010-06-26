@@ -60,7 +60,7 @@ var Playlist = {
         $('#loadingVideoDiv').css('display','block');
         $.get('/jukebox/get_closest_video/', song, function(data) {
                 if(data['status']=='ok') {
-                    $('title').html('odosloop - ' + data['video_title']);
+                    $('title').html('odosloop - ' + song['artist'] + ' - ' + song['name']);
                     Playlist.currentSongOpened = data;
                     Playlist.play(data['video_id'], data['video_title']);
 
