@@ -5,8 +5,10 @@ ul.vertical_list li.vertical_item { float:left; clear:both; width:100%; }
 .horizontal_list li.horizontal_item { float:left; } 
 
 /* old stuffs */
-div#videoDiv { width:480px; height:295px; background:#efcf22; }
-h1#title { height:45px;width:480px; overflow:hidden; }
+div#videoDiv { width:480px; height:295px; }
+div#loadingVideoDiv { width:480px; height:352px; float:right; }
+div#loadingDummyVideo { width:480px; height:295px; background:#efcf22; }
+div#youtube_container h1, div#loadingVideoDiv h1 { height:45px;width:480px; overflow:hidden; }
 #lastfm_container li.vertical_item { font-size:14px;} 
 #lastfm_friends_container,#lastfm_neighbors_container, #user_playlist_container { overflow:hidden; } 
 #lastfm_recents_container { width:250px; overflow:hidden; } 
@@ -20,6 +22,8 @@ ul#menu_list a, ul#recent_list a,ul#track_list a { padding:5px; text-decoration:
 ul#menu_list .action:hover, ul#track_list .action:hover { background:#ff3333; } 
 a.recent_song { width:180px; }
 
+/* popup */
+.loading_overlay { position:absolute; height:100%; width:100%; display:none; background:#999999 url(/site_media/img/ajax-loader.gif) no-repeat center center; opacity:0.6; }
 
 /* index */
 #menu_container { float:left; margin-right:10px; width:80px; } 
@@ -32,7 +36,15 @@ div#login_container { float:right; }
 div#header h1, div#header form#music_search_form { float:left; } 
 div#header form#music_search_form { margin-left:50px; } 
 
+
 /* sign in page */
+#container div#signup_container {
+    display:none;
+    position:absolute;
+    top:79px;
+    background:#222211;
+}
+
 .signup_page #title a { 
     float:left;
     margin:20px 0 5px 20px;
@@ -41,16 +53,18 @@ div#header form#music_search_form { margin-left:50px; }
     border:none;
 }
 
-.signup_page { 
-    width:760px; 
-} 
-
 .form_container .error_message {
     border:2px solid #eeee22;
     background:#cccc99;
     padding:5px;
     margin-bottom:10px;
 }
+
+ul.errorlist { 
+    margin:0;
+    font-size:10pt;
+}
+
 #register_form_container {
     width:368px; 
 }
@@ -71,8 +85,10 @@ div#header form#music_search_form { margin-left:50px; }
     float:left; 
     background:#aaaaaa; 
     padding:10px;
-    margin:10px;
+    margin:23px;
 }
+
+div#signup_container .closePanel { position:absolute; right:5px; top:2px; }
 
 #register_form_container form {
     width:336px;

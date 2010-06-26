@@ -17,10 +17,8 @@
 
                     $('#radio_{{playlist_id}}_'+id).bind('click',function() {
                         id = $(this).attr('id').split('_')[2];
-                        Playlist.radio('{{playlist_id}}',id);
-                        song = Playlist.songs['{{playlist_id}}'][id];
-
-                        Radio.open(song['lastfm_track_id']);
+                        lfm_id = Playlist.getPlaylistSong('{{playlist_id}}', id);
+                        Radio.search(lfm_id);
                     });
                 });
             </script>

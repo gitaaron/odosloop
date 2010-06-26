@@ -5,15 +5,14 @@ function onYouTubePlayerReady(playerId) {
     ytplayer.addEventListener('onStateChange','Playlist.onPlayerStateChange');
     ytplayer.addEventListener('onError','Playlist.onPlayerError');
     ytplayer.playVideo();
-    Playlist.player = ytplayer;
 }
 
 var Playlist = {
     songs : new Array(),
     currentSong : false,
+    currentListId : false,
     currentSongOpened : false,
     lastSongLogged : false,
-    player : false,
 
     loadSearch : function(q) {
         $('#search_container').html('<h3>loading...</h3>');
@@ -40,11 +39,10 @@ var Playlist = {
     saveSongAsPlayed : function(songId,lastFMTrackSongId) {
         if(songId == Playlist.currentSong && songId != Playlist.lastSongLogged) {
             $.post('/accounts/song_played/' + lastFMTrackSongId+'/', function(data) {
-                    jsonData = JSON.parse(data);
-                    if(jsonData['status']=='ok') {
+                    if(data['status']=='ok') {
                         Playlist.lastSongLogged = songId;
                     } else { 
-                        console.log('song_played result failed because : ' + jsonData['message']);
+                        console.log('song_played result failed because : ' + data['message']);
                     }
             });
         } 
@@ -55,48 +53,45 @@ var Playlist = {
         song = Playlist.songs[playlist_id][songId];
 
         Playlist.currentSong = songId;
-         
+        Playlist.currentListId = playlist_id; 
+        // show loading div and hide video container
+        $('#youtube_container').css('display','none');
+        $('#youtube_container').html('<h1 id="title"></h1><div id="videoDiv"></div>');
+        $('#loadingVideoDiv').css('display','block');
         $.get('/jukebox/get_closest_video/', song, function(data) {
-                jsonData = JSON.parse(data);
-                if(jsonData['status']=='ok') {
-                    Playlist.currentSongOpened = jsonData;
-                    Playlist.play(jsonData['video_id'], jsonData['video_title']);
-                    // set radio form
-                    $('#radio_form').css('display','block');
-                    radio_track = $('#radio_form').children().filter('input[name|=lastfm_track]');
-                    radio_track.attr('value',jsonData['lastfm_track_id'])
-                    // set add to playlist form
-                    $('#playlist_form').css('display','block');
-                    playlist_track_song = $('#playlist_form').children().filter('input[name|=lastfm_track_song]');
-                    playlist_track_song.attr('value',jsonData['lastfm_track_song_id']); 
+                if(data['status']=='ok') {
+                    $('title').html('odosloop - ' + data['video_title']);
+                    Playlist.currentSongOpened = data;
+                    Playlist.play(data['video_id'], data['video_title']);
 
-                    setTimeout("Playlist.saveSongAsPlayed(" + escape(songId) + ","+escape(jsonData['lastfm_track_song_id'])+")", 20000);
+                    setTimeout("Playlist.saveSongAsPlayed(" + escape(songId) + ","+escape(data['lastfm_track_song_id'])+")", 20000);
+
                 } else { 
-                    Playlist.markSongAsErred(songId);
+                    Playlist.markSongAsErred(playlist_id, songId);
                     Playlist.goToNext();
                 }
         });
         return false;
     },
 
-    radio : function(playlist_id, songId) {
-        songId = parseInt(songId);
-        song = Playlist.songs[playlist_id][songId];
-        Playlist.currentSong = songId;
-        $.get('/jukebox/get_lastfm_track', song, function(data) {
-            jsonData = JSON.parse(data);
-            if(jsonData['status'] =='ok') {
-                Radio.open(jsonData['lastfm_track_id']);
-            } else {
-                Playlist.markSongAsErred(songId);
-            }
-        });
+    getPlaylistSong : function(playlist_id, song_id) {
+        songId = parseInt(song_id);
+        song = Playlist.songs[playlist_id][song_id];
+        return song;
     },
 
-    markSongAsErred : function(songId) {
-        elem = Playlist.getElemById(songId);
+    getSongIdForSong : function(playlist_id, song) {
+        id = $.inArray(song, Playlist.songs[playlist_id]);
+    },
+
+    markSongAsErred : function(playlist_id, song_id) {
+        elem = Playlist.getElemById(playlist_id, song_id);
         elem.html('(error) ' + elem.html());
     },
+
+    getElemById : function(playlist_id, song_id) { 
+        return $('#'+playlist_id+'_item_'+song_id);
+    }, 
 
     play : function(id,title) {
         /*
@@ -104,31 +99,33 @@ var Playlist = {
         */
         songId = Playlist.currentSong;
         $('.now_playing').removeClass('now_playing');
-        elem = Playlist.getElemById(songId);
+        elem = Playlist.getListItem(Playlist.currentListId, songId);
         elem.addClass('now_playing');
 
         $('#title').html(title);
-        if(Playlist.player) {
-            Playlist.player.loadVideoById(id);
-        } else {
-            // The video to load.
-            var videoID = id
-            // Lets Flash from another domain call JavaScript
-            var params = { allowScriptAccess: "always" };
-            // The element id of the Flash embed
-            var atts = { id: "ytPlayer" };
-            // All of the magic handled by SWFObject (http://code.google.com/p/swfobject/)
-            swfobject.embedSWF("http://www.youtube.com/v/" + videoID + "&enablejsapi=1&playerapiid="+API_KEY,
-                               "videoDiv", "480", "295", "8", null, null, params, atts);
 
-        }
+        // hide loading div and show video container
+        $('#youtube_container').css('display','block');
+        $('#loadingVideoDiv').css('display','none');
+
+
+        // The video to load.
+        var videoID = id
+        // Lets Flash from another domain call JavaScript
+        var params = { allowScriptAccess: "always" };
+        // The element id of the Flash embed
+        var atts = { id: "ytPlayer" };
+        // All of the magic handled by SWFObject (http://code.google.com/p/swfobject/)
+        swfobject.embedSWF("http://www.youtube.com/v/" + videoID + "&enablejsapi=1&playerapiid="+API_KEY,
+                           "videoDiv", "480", "295", "8", null, null, params, atts);
+
 
 
     },
 
-    getElemById : function(id) {
+    getListItem : function(playListId, songId) {
         name = DocString.get()['menu'];
-        return $('#'+name+'_item_'+id);
+        return $('#'+playListId+'_item_'+songId);
     },
 
     onPlayerStateChange : function(state) {
@@ -143,7 +140,7 @@ var Playlist = {
     
     goToNext : function() {
         songId = Playlist.currentSong+1;
-        Playlist.open(DocString.get()['menu'], songId);
+        Playlist.open(Playlist.currentListId, songId);
     }
 
 }

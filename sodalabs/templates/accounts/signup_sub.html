@@ -1,0 +1,12 @@
+<div id="signup_container">
+    <div class="loading_overlay" id="signup_container_overlay"></div>
+
+    <a href="javascript:void(0);" title="close window" onclick="return User.closeLoginScreen();" class="closePanel panelLink">close</a>
+    <div id="register_form_container" class="form_container">
+        {% include 'accounts/register_form.html' %}
+    </div>
+
+    <div id="login_form_container" class="form_container">
+        {% include 'accounts/login_form.html' %}
+    </div>
+</div>

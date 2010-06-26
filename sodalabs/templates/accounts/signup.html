@@ -1,66 +1,13 @@
 {% extends "base.html" %}
-{% block body_class %}signup_page{% endblock %}
 {% block content %}
 
 
-<div id="title"><a href="/"><img width="200" src="/site_media/img/yupstock_logo_big.png"/></a><div style="clear:both;"></div></div>
-<div id="register_form_container" class="form_container">
-<h3>Sign up.  It's free and you'll get...</h3>
-<ul id="register_reasons_one" class="register_reasons_list">
-    <li>Better music recommendations</li>
-    <li>Link your last.fm account</li>
-</ul>
-<ul id="register_reasons_two" class="register_reasons_list">
-    <li>Saved playlists</li>
-    <li>Saved play history</li>
-</ul>
-<div style="clear:both;"></div>
-{% if register_form.errors %}
-<p class="error_message">
-    We had a problem processing your info.  See below for more details.
-</p>
-{% endif %}
-
-<form id="register_form" action="/accounts/signup/" method="post">
-    <table>
-        <tr><th>{{register_form.musiphile_email.label_tag}}</th><td>{{register_form.musiphile_email}}</td></tr>
-        {% if register_form.musiphile_email.errors %}
-        <tr><td class="field_error_msg" colspan="2">{{register_form.musiphile_email.errors}}</td></tr>
-        {% endif %}
-        <tr><th>{{register_form.password1.label_tag}}</th><td>{{register_form.password1}}</td></tr>
-        {% if register_form.password1.errors %}
-        <tr><td class="field_error_msg" colspan="2">{{register_form.password1.errors}}</td></tr>
-        {% endif %}
-        <tr><th>{{register_form.password2.label_tag}}</th><td>{{register_form.password2}}</td></tr>
-        {% if register_form.password2.errors %}
-        <tr><td class="field_error_msg" colspan="2">{{register_form.password2.errors}}</td></tr>
-        {% endif %}
-
-    </table>
-    <button type="submit">Create my account</button>
-    <input type="hidden" name="next" value="{{next}}" />
-    <input type="hidden" name="action" value="register" />
-</form>
+<div id="title">
+    <h1>Signup</h1>
+    <div style="clear:both;"></div>
 </div>
 
-<div id="login_form_container" class="form_container">
-<h3>Sign in</h3>
-{% if login_form.errors %}
-<p class="error_message">
-    Your email and password did not match.  Note that both fields are case-sensitive.
-</p>
-{% endif %}
 
-<form id="login_form" method="post" action="/accounts/signup/">
-    <table>
-        <tr><th>{{login_form.musiphile_email.label_tag}}</th><td>{{login_form.musiphile_email}}</td></tr>
-        <tr><th>{{login_form.password.label_tag}}</th><td>{{login_form.password}}</td></tr>
-    </table>
-    <div><a href="/password/reset/">Forgot your password?</a><br /><br /></div>
-    <button type="submit">login</button>
-    <input type="hidden" name="next" value="{{next}}" />
-    <input type="hidden" name="action" value="login" />
-</form>
-</div>
+{% include "accounts/signup_sub.html" %}
 
 {% endblock %}

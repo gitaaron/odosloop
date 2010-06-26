@@ -8,8 +8,12 @@ var Menu = {
         });
 
         $('#menu_list a').bind('click',function() {
-            DocString.add({'menu':$(this).attr('id')}); 
-            $(document).trigger('menuChanged',{'menu_item':$(this).attr('id')});
+            if (!DocString.get()['r'] && Playlist.currentSong) {
+                Radio.search(Playlist.getPlaylistSong(Playlist.currentListId, Playlist.currentSong));
+            } else { 
+                DocString.add({'menu':$(this).attr('id')}); 
+            }
+            //$(document).trigger('menuChanged',{'menu_item':$(this).attr('id')});
         });
 
     }, 

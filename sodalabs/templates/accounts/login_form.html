@@ -1,0 +1,18 @@
+<h3>Sign in</h3>
+{% if show_error_message %}
+<p class="error_message">
+    Your email and password did not match.  Note that both fields are case-sensitive.
+</p>
+{% endif %}
+
+<form id="login_form" onsubmit="return User.login();" method="post" >
+    <table>
+        <tr><th>{{login_form.musiphile_email.label_tag}}</th><td>{{login_form.musiphile_email}}</td></tr>
+        <tr><th>{{login_form.password.label_tag}}</th><td>{{login_form.password}}</td></tr>
+    </table>
+    <div><a href="/password/reset/">Forgot your password?</a><br /><br /></div>
+    <button type="submit">login</button>
+    <input type="hidden" name="next" value="{{next}}" />
+    <input type="hidden" name="action" value="login" />
+</form>
+

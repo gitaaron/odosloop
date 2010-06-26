@@ -1,0 +1,36 @@
+<h3>Sign up.  It's free and you'll get...</h3>
+<ul id="register_reasons_one" class="register_reasons_list">
+    <li>Better music recommendations</li>
+    <li>Link your last.fm account</li>
+</ul>
+<ul id="register_reasons_two" class="register_reasons_list">
+    <li>Saved playlists</li>
+    <li>Saved play history</li>
+</ul>
+<div style="clear:both;"></div>
+{% if show_error_message %}
+<p class="error_message">
+    We had a problem processing your info.  See below for more details.
+</p>
+{% endif %}
+
+<form id="register_form" onsubmit="return User.register();" method="post">
+    <table>
+        <tr><th>{{register_form.musiphile_email.label_tag}}</th><td>{{register_form.musiphile_email}}</td></tr>
+        {% if register_form.musiphile_email.errors %}
+        <tr><td class="field_error_msg" colspan="2">{{register_form.musiphile_email.errors}}</td></tr>
+        {% endif %}
+        <tr><th>{{register_form.password1.label_tag}}</th><td>{{register_form.password1}}</td></tr>
+        {% if register_form.password1.errors %}
+        <tr><td class="field_error_msg" colspan="2">{{register_form.password1.errors}}</td></tr>
+        {% endif %}
+        <tr><th>{{register_form.password2.label_tag}}</th><td>{{register_form.password2}}</td></tr>
+        {% if register_form.password2.errors %}
+        <tr><td class="field_error_msg" colspan="2">{{register_form.password2.errors}}</td></tr>
+        {% endif %}
+
+    </table>
+    <button type="submit">Create my account</button>
+    <input type="hidden" name="next" value="{{next}}" />
+    <input type="hidden" name="action" value="register" />
+</form>

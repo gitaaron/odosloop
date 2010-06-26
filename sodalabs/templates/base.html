@@ -2,16 +2,19 @@
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
-    <title>{% block title %} sodalabs {% endblock %}</title>
+    <title>{% block title %}odosloop{% endblock %}</title>
     <link rel="stylesheet" href="/site_media/css/reset.css" type="text/css"/>
     <link rel="stylesheet" type="text/css" href="/site_media/css/sodalabs.css" />
-    <script type="text/javascript" src="/site_media/js/jquery-1.3.2.min.js"></script>
+    <script type="text/javascript" src="/site_media/js/jquery-1.4.2.min.js"></script>
     <script type="text/javascript" src="/site_media/js/playlist.js"></script>
     <script type="text/javascript" src="/site_media/js/search.js"></script>
     <script type="text/javascript" src="/site_media/js/feed.js"></script>
     <script type="text/javascript" src="/site_media/js/radio.js"></script>
     <script type="text/javascript" src="/site_media/js/docstring.js"></script>
+    <script type="text/javascript" src="/site_media/js/dstring.js"></script>
     <script type="text/javascript" src="/site_media/js/menu.js"></script>
+    <script type="text/javascript" src="/site_media/js/user.js"></script>
+
     <script type="text/javascript" src="/site_media/js/swfobject/src/swfobject.js"></script>
 
     {% block reset_styles %}{% endblock %}
@@ -26,9 +29,11 @@
                 Radio.init();
                 Search.init();
                 DocString.init();
+                User.init();
         });
     </script>
   <div id="container">
+    {% include "accounts/signup_sub.html" %}
     {% if messages %}
       <ul class="messagelist">{% for message in messages %}<li>{{ message|escape }}</li>{% endfor %}</ul>
     {% endif %}

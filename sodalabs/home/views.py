@@ -1,14 +1,14 @@
 # Create your views here.
 from django.views.generic.simple import direct_to_template
+from django.shortcuts import render_to_response
+from django.template import RequestContext
 from sodalabs.lastfm import make_lastfm_request,get_tracks
 from sodalabs.accounts.models import PlayHistory
 from sodalabs.playlist.helpers import ordered_unique
-
 from lastfm import _encode
 
 def index(request):
-   
-    return direct_to_template(request, 'index.html')
+    return render_to_response('index.html',context_instance=RequestContext(request))
 
 
 def feed(request):
