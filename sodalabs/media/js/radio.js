@@ -1,8 +1,16 @@
 var Radio = {
     init : function() {
         $(document).bind('hrefChanged', function(e, diff) {
-            if(diff.r) {
-                Playlist.loadRadio(diff.r);
+            if(diff.menu=='radio' || diff.r) {
+                console.log('hrefchanged');
+
+                if(diff.r) {
+                    console.log('diff.r');
+                    Playlist.loadRadio(diff.r);
+                } else if (Playlist.currentSong || Playlist.currentSong==0) {
+                    console.log('no station found.. but song selected so using that');
+                    Radio.search(Playlist.getPlaylistSong(Playlist.currentListId, Playlist.currentSong));
+                }
             }
         });
 

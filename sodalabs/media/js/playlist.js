@@ -53,6 +53,10 @@ var Playlist = {
         song = Playlist.songs[playlist_id][songId];
 
         Playlist.currentSong = songId;
+        console.log('current song : ' + Playlist.currentSong);
+        if (Playlist.currentSong || Playlist.currentSong==0) {
+            console.log('zip');
+        }
         Playlist.currentListId = playlist_id; 
         // show loading div and hide video container
         $('#youtube_container').css('display','none');
@@ -142,15 +146,6 @@ var Playlist = {
         songId = Playlist.currentSong+1;
         Playlist.open(Playlist.currentListId, songId);
     },
-
-    create : function() {
-        $.post('/playlist/create/', function() {
-                $.get('/playlist/menu/'+DocString.get()['user'], function(data) {
-                    $('#menu_container').html(data);
-                });
-        });
-    }
-
 
 
 }

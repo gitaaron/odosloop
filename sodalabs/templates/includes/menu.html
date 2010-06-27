@@ -16,13 +16,13 @@
             <div id="playlist_item_{{playlist.id}}">
             <a id="{{playlist.slug_name}}" class="action">{{playlist.name}}</a>
             {% ifmusiphileiscreator request.user playlist %}
-            <a href="javascript:void(0);" onclick="Menu.editPlaylistItem({{playlist.id}});">edit</a>
+            <a href="javascript:void(0);" onclick="UserPlaylist.editPlaylistItem({{playlist.id}});">edit</a>
             {% endifmusiphileiscreator %}
             </div>
             {% ifmusiphileiscreator request.user playlist %}
                 <div class="editable_menu_item" id="editable_playlist_item_{{playlist.id}}" style="display:none" >
                     <input type="text" value="{{playlist.name}}" id="editable_playlist_name_{{playlist.id}}" />
-                    <a href="javascript:void(0);" onclick="Menu.savePlaylistItem({{playlist.id}});">save</a>
+                    <a href="javascript:void(0);" onclick="UserPlaylist.savePlaylistItem({{playlist.id}});">save</a>
                 </div>
             {% endifmusiphileiscreator %}
         </li>
@@ -31,7 +31,7 @@
 
 {% if show_create_button %}
 <li class="vertical_item">
-<a href="javascript:void(0);" onclick="Playlist.create();">create new playlist</a>
+<a href="javascript:void(0);" onclick="UserPlaylist.create();">create new playlist</a>
 </li>
 {% endif %}
 
