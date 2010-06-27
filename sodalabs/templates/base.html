@@ -24,7 +24,6 @@
 <body class="{% block body_class %}{% endblock %}">
     <script type="text/javascript">
         $(document).ready(function() {
-                Menu.init();
                 Feed.init();
                 Radio.init();
                 Search.init();
@@ -34,9 +33,6 @@
     </script>
   <div id="container">
     {% include "accounts/signup_sub.html" %}
-    {% if messages %}
-      <ul class="messagelist">{% for message in messages %}<li>{{ message|escape }}</li>{% endfor %}</ul>
-    {% endif %}
     {% include "header.html" %}
     <div id="content" class="{% block content_class %}{% endblock %}">
       {% block content %}{% endblock %}

@@ -1,6 +1,6 @@
 function UserEvent() {
-    this.triggerLogin = function() {
-        $(this).trigger('user_login');
+    this.triggerLogin = function(user_id,user_name) {
+        $(this).trigger('user_login', {'user_id':user_id,'user_name':user_name});
     }
     return true;
 }
@@ -12,21 +12,29 @@ var User = {
     init : function() {
         e_m = User.eventManager;
         $(e_m).bind('user_login', User.afterLogin);
+        $(document).bind('hrefChanged', User.userSelected);
     }, 
+
+    userSelected : function(e, diff) {
+        if(diff.user) {
+            $('#sub_header').html('<h3>'+diff['user']+'</h3>');
+        }
+    },
 
     openLoginScreen : function() {
         $('#signup_container').css({'display':'block'});
         return false;
     },
 
-    afterLogin : function() {
+    afterLogin : function(e, data) {
         $('#login_container').animate({opacity:0}, function() {
                 $.get('/accounts/ajax_login_container', function(data) {
-                    console.log('data : ' + data);
                     $('#login_container').html(data);
                     $('#login_container').animate({opacity:1});
                 });
         });
+
+        DocString.add({'user':data['user_name']});
     },
 
     closeLoginScreen : function() {
@@ -51,7 +59,7 @@ var User = {
                 $('#register_form_container').html(data['message']);
             } else {
                 User.closeLoginScreen();
-                User.eventManager.triggerLogin();
+                User.eventManager.triggerLogin(data['user_id'],data['user_name']);
             }
         });
         return false;
@@ -74,7 +82,7 @@ var User = {
                     $('#login_form_container').html(data['message']);
                 } else {
                     User.closeLoginScreen();
-                    User.eventManager.triggerLogin();
+                    User.eventManager.triggerLogin(data['user_id'],data['user_name']);
                 }
             } catch(e) {
                 alert('Error : ' + e.description);

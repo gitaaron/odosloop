@@ -1,14 +1,18 @@
 # Create your views here.
 from sodalabs.rest_ws.helpers import ResponseNotAllowed,ResponseBadRequest,HttpResponse
-from django.http import Http404,HttpResponseRedirect
+from django.http import Http404,HttpResponseRedirect, HttpResponseNotAllowed, HttpResponseForbidden
 from django.views.generic.simple import direct_to_template
 from django.template.defaultfilters import slugify
+from django.contrib.auth.decorators import login_required
+from django.utils import simplejson as json
+
 from sodalabs.jukebox.models import LastFMTrackSong
 from sodalabs.accounts.models import Musiphile
 from sodalabs.playlist.models import PlaylistUser,Playlist,PlaylistSong
 from sodalabs.playlist.helpers import ordered_unique
 
-def get(request, username, name):
+def get(request, slug_name):
+    '''
     if username=='me':
         lastfm_track_songs = request.session.get('playlist',[])
         tracks = []
@@ -39,6 +43,24 @@ def get(request, username, name):
     tracks = ordered_unique(tracks)
 
     return direct_to_template(request, 'accounts/playlist.html', {'playlist_id':playlist_title.slugify(), 'playlist_title':playlist_title, 'lastfm_tracks':tracks})
+    '''
+    return HttpResponse('ok')
+
+def menu_list(request, username):
+    try:
+        user = Musiphile.objects.get(username=username)
+    except Musiphile.DoesNotExist:
+        raise Http404()
+
+    playlists = Playlist.objects.filter(users=user)
+
+    show_create = False
+    if request.user.is_authenticated():
+        if request.user == user:
+            show_create = True
+
+    return direct_to_template(request, 'includes/menu.html', {'playlists':playlists, 'show_create_button':show_create})
+    
 
 def add(request):
     if request.method!="POST":
@@ -88,4 +110,38 @@ def add(request):
         
         return HttpResponseRedirect('/playlist/get/me/Favorites')
 
+@login_required
+def create(request):
+    musiphile = Musiphile.objects.from_request(request)
+    if not musiphile:
+        return HttpResponse(json.dumps({'status':'failed','message':'User is not a musiphile'}), content_type="application/json")
+
+    pls = Playlist(creator=musiphile)
+    pls.save()
+    pls_user = PlaylistUser(user=musiphile,playlist=pls)
+    pls_user.save()
+
+    return HttpResponse(json.dumps({'status':'ok','playlist_id':pls.id}), content_type="application/json")
+
+@login_required
+def save(request):
+    musiphile = Musiphile.objects.from_request(request)
+    if not musiphile:
+        raise Http404()
+
+    if request.method!='POST':
+        return HttpResponseNotAllowed(['POST'])
+
+    playlist_id = request.POST.get('playlist_id')
+    try:
+        playlist = Playlist.objects.get(id=playlist_id)
+    except Playlist.DoesNotExist:
+        raise Http404()
+
+    if playlist.creator == musiphile: 
+        playlist.name = request.POST.get('name')
+        playlist.save()
+        return HttpResponse(json.dumps({'status':'ok'}), content_type="application/json")
+    else:
+        return HttpResponseForbidden()
 

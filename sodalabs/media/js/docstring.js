@@ -53,7 +53,7 @@ var DocString = {
             $(document).trigger('hrefChanged', diff);
         }
 
-        setTimeout('DocString.pollHref()',1000); 
+        setTimeout('DocString.pollHref()',500); 
     },
 
     // add data as dict of key value pairs to document location

@@ -97,7 +97,7 @@ def ajax_login(request):
             request.session.delete_test_cookie()
 
         save_session_playhistory(request,request.user)
-        return HttpResponse(json.dumps({'status':'ok'}), content_type="application/json")
+        return HttpResponse(json.dumps({'status':'ok', 'user_id':user.id, 'user_name':user.username}), content_type="application/json")
     else:
         c = RequestContext(request, {'show_error_message':True})
         t = loader.get_template('accounts/login_form.html')
@@ -136,7 +136,7 @@ def ajax_signup(request):
         login(request,user)
         
         save_session_playhistory(request,user)
-        return HttpResponse(json.dumps({'status':'ok'}), content_type="application/json")
+        return HttpResponse(json.dumps({'status':'ok', 'user_id':user.id, 'user_name':user.username}), content_type="application/json")
    
     errors = {}
     c = RequestContext(request, {'show_error_message':True})

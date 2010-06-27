@@ -8,12 +8,7 @@
 {% include 'includes/player.html' %}
 
 <div id="menu_container">
-    <h3>menu</h3>
-    <ul id="menu_list" class="vertical_list">
-        <li class="vertical_item"><a id="feed" class="action" >feed</a></li>
-        <li class="vertical_item"><a id="search" class="action" >search</a></li>
-        <li class="vertical_item"><a id="radio" class="action" >radio</a></li>
-    </ul>
+    {% include "includes/menu.html" %}
 </div>
 
 <div id="feed_container" class="playlist_container" style="display:none;">

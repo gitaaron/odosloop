@@ -22,11 +22,13 @@ ul#menu_list a, ul#recent_list a,ul#track_list a { padding:5px; text-decoration:
 ul#menu_list .action:hover, ul#track_list .action:hover { background:#ff3333; } 
 a.recent_song { width:180px; }
 
+.editable_menu_item input { float:left; }
+
 /* popup */
 .loading_overlay { position:absolute; height:100%; width:100%; display:none; background:#999999 url(/site_media/img/ajax-loader.gif) no-repeat center center; opacity:0.6; }
 
 /* index */
-#menu_container { float:left; margin-right:10px; width:80px; } 
+#menu_container { float:left; margin-right:10px; margin-top:20px;} 
 .lastfm_list_container,.list_container { float:left; margin-right:20px;} 
 .playlist_container { width:350px; } 
 
@@ -36,6 +38,7 @@ div#login_container { float:right; }
 div#header h1, div#header form#music_search_form { float:left; } 
 div#header form#music_search_form { margin-left:50px; } 
 
+div#sub_header { float:left; width:100%; }
 
 /* sign in page */
 #container div#signup_container {

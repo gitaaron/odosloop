@@ -141,6 +141,16 @@ var Playlist = {
     goToNext : function() {
         songId = Playlist.currentSong+1;
         Playlist.open(Playlist.currentListId, songId);
+    },
+
+    create : function() {
+        $.post('/playlist/create/', function() {
+                $.get('/playlist/menu/'+DocString.get()['user'], function(data) {
+                    $('#menu_container').html(data);
+                });
+        });
     }
+
+
 
 }

@@ -2,5 +2,8 @@ from django.conf.urls.defaults import *
 
 urlpatterns = patterns('sodalabs.playlist.views',
         (r'^add/$', 'add'),
-        (r'^get/(?P<username>.+)/(?P<name>.+)/$', 'get'),
+        (r'^get/(?P<slug_name>[-\w]+)$', 'get'),
+        (r'^menu/(?P<username>.+)$', 'menu_list'),
+        (r'^create/', 'create'),
+        (r'^save/', 'save')
 )
