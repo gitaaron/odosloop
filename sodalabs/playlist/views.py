@@ -6,109 +6,91 @@ from django.template.defaultfilters import slugify
 from django.contrib.auth.decorators import login_required
 from django.utils import simplejson as json
 
-from sodalabs.jukebox.models import LastFMTrackSong
+from sodalabs.lastfm.models import Track
 from sodalabs.accounts.models import Musiphile
 from sodalabs.playlist.models import PlaylistUser,Playlist,PlaylistSong
 from sodalabs.playlist.helpers import ordered_unique
 
 def get(request, slug_name):
-    '''
-    if username=='me':
-        lastfm_track_songs = request.session.get('playlist',[])
-        tracks = []
-        for song in lastfm_track_songs:
-            lastfm_track = song.lastfm_track
-            tracks.append({'name':lastfm_track.name,'artist':lastfm_track.artist})
+    try:
+        playlist = Playlist.objects.get(slug_name=slug_name)
+    except Playlist.DoesNotExist:
+        raise Http404()
 
-        playlist_title = 'Favorites'
-    else:
+    tracks = playlist.lastfm_track.all()
+    
+    return direct_to_template(request, 'includes/playlist.html', {'playlist_id':'playlist_%s' % slug_name, 'playlist_title':playlist.name, 'lastfm_tracks':tracks})
+
+def menu_list(request, username=None):
+    show_create = False
+    playlists = None
+    if username:
         try:
-            musiphile = Musiphile.objects.get(username=username)
+            user = Musiphile.objects.get(username=username)
         except Musiphile.DoesNotExist:
             raise Http404()
 
-        try:
-            playlist_user = PlaylistUser.objects.get(playlist__name=name, user=musiphile)
-        except PlaylistUser.DoesNotExist:
-            raise Http404()
+        playlists = Playlist.objects.filter(users=user)
 
-        tracks = []
-        playlist_songs = playlist_user.playlist.playlistsong_set.all()
-        for playlist_song in playlist_songs:
-            lastfm_track = playlist_song.lastfm_track_song.lastfm_track
-            tracks.append({'name':lastfm_track.name, 'artist':lastfm_track.artist})
 
-        playlist_title = playlist_user.playlist.name
-
-    tracks = ordered_unique(tracks)
-
-    return direct_to_template(request, 'accounts/playlist.html', {'playlist_id':playlist_title.slugify(), 'playlist_title':playlist_title, 'lastfm_tracks':tracks})
-    '''
-    return HttpResponse('ok')
-
-def menu_list(request, username):
-    try:
-        user = Musiphile.objects.get(username=username)
-    except Musiphile.DoesNotExist:
-        raise Http404()
-
-    playlists = Playlist.objects.filter(users=user)
-
-    show_create = False
-    if request.user.is_authenticated():
-        if request.user == user:
-            show_create = True
+        if request.user.is_authenticated():
+            if request.user == user:
+                show_create = True
 
     return direct_to_template(request, 'includes/menu.html', {'playlists':playlists, 'show_create_button':show_create})
     
-
 def add(request):
     if request.method!="POST":
         return ResponseNotAllowed(['POST'])
 
-    lastfm_track_song_id = request.POST.get('lastfm_track_song',None)
-    if not lastfm_track_song_id:
+    lastfm_track_id = request.POST.get('lastfm_track',None)
+    if not lastfm_track_id:
         return ResponseBadRequest('Required lastfm_track_song_id was not specified.')
 
     try:
-        lastfm_track_song = LastFMTrackSong.objects.get(id=lastfm_track_song_id)
-    except LastFMTrackSong.DoesNotExist:
-        raise Http404
+        lastfm_track = Track.objects.get(id=lastfm_track_id)
+    except Track.DoesNotExist:
+        return ResponseBadRequest('Could not find track with id : %s' % lastfm_track_id)
+
+    playlist = None
+    playlist_id = request.POST.get('playlist', None)
+    if playlist_id:
+        try:
+            playlist = Playlist.objects.get(id=playlist_id)
+        except Playlist.DoesNotExist:
+            return ResponseBadRequest('Could not find playlist with id : %s' % playlist_id) 
 
 
     if request.user.is_authenticated():
         musiphile = Musiphile.objects.get(id=request.user.id)
         # if no playlist was specified, use the first one found
-        playlist_users = PlaylistUser.objects.filter(user=musiphile) 
-        if playlist_users:
-            playlist_user = playlist_users[0]
-        else:
-            playlist = Playlist()
+        if not playlist: # create a new one for this user and add the song to that playlist
+            playlist = Playlist(creator=musiphile)
             playlist.save()
             playlist_user = PlaylistUser(playlist=playlist,user=musiphile)
             playlist_user.save()
 
         # ensure the song has not already been added to the playlist
         try:
-            playlist_song = PlaylistSong.objects.get(lastfm_track_song=lastfm_track_song,playlist=playlist_user.playlist)
+            playlist_song = PlaylistSong.objects.get(lastfm_track=lastfm_track,playlist=playlist)
         except PlaylistSong.DoesNotExist:
             # add song to playlist
-            playlist_song = PlaylistSong(lastfm_track_song=lastfm_track_song,playlist=playlist_user.playlist)
+            playlist_song = PlaylistSong(lastfm_track=lastfm_track,playlist=playlist)
             playlist_song.save()
-        return HttpResponseRedirect('/playlist/get/'+request.user.username+'/'+playlist_user.playlist.name)
+
     else:
         playlist = request.session.get('playlist',[])
         was_added=False
         for item in playlist:
-            if item==lastfm_track_song.id:
+            if item==lastfm_track.id:
                 was_added=True
                 break
         if not was_added:
-            playlist.append(lastfm_track_song)
+            playlist.append(lastfm_track)
 
         request.session['playlist'] = playlist
         
-        return HttpResponseRedirect('/playlist/get/me/Favorites')
+    return HttpResponse(json.dumps({'status':'ok'}), content_type="application/json")
 
 @login_required
 def create(request):

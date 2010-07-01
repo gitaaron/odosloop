@@ -8,7 +8,7 @@ from sodalabs.playlist.helpers import ordered_unique
 from lastfm import _encode
 
 def index(request):
-    return render_to_response('index.html',context_instance=RequestContext(request))
+    return direct_to_template(request, 'index.html')
 
 
 def feed(request):

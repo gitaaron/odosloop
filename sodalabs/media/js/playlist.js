@@ -36,6 +36,13 @@ var Playlist = {
             });
     },
 
+    loadUserPlaylist : function(slug_name) {
+        $('#userplaylist_container').html('<h3>loading...</h3>');
+        $.get('/playlist/get/'+slug_name, function(data) {
+                $('#userplaylist_container').html(data);
+        });
+    },
+
     saveSongAsPlayed : function(songId,lastFMTrackSongId) {
         if(songId == Playlist.currentSong && songId != Playlist.lastSongLogged) {
             $.post('/accounts/song_played/' + lastFMTrackSongId+'/', function(data) {
@@ -53,10 +60,6 @@ var Playlist = {
         song = Playlist.songs[playlist_id][songId];
 
         Playlist.currentSong = songId;
-        console.log('current song : ' + Playlist.currentSong);
-        if (Playlist.currentSong || Playlist.currentSong==0) {
-            console.log('zip');
-        }
         Playlist.currentListId = playlist_id; 
         // show loading div and hide video container
         $('#youtube_container').css('display','none');

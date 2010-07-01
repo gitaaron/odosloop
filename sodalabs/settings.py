@@ -98,4 +98,5 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     "django.core.context_processors.debug",
     "django.core.context_processors.i18n",
     'sodalabs.accounts.context_processors.signup_form',
+    'sodalabs.playlist.context_processors.saved_playlist'
 )

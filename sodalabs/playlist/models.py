@@ -6,7 +6,7 @@ from django.utils.translation import ugettext_lazy as _
 class Playlist(models.Model):
     name = models.CharField(max_length=300, default="untitled playlist")
     slug_name = models.SlugField(_('Slug Name'), max_length=255)
-    lastfm_track_songs = models.ManyToManyField("jukebox.LastFMTrackSong", through="PlaylistSong")
+    lastfm_track = models.ManyToManyField("lastfm.Track", through="PlaylistSong")
     users = models.ManyToManyField("accounts.Musiphile", through="PlaylistUser")
     creator = models.ForeignKey("accounts.Musiphile", related_name="creator")
 
@@ -16,7 +16,7 @@ class Playlist(models.Model):
 
 class PlaylistSong(models.Model):
     playlist = models.ForeignKey(Playlist)
-    lastfm_track_song = models.ForeignKey("jukebox.LastFMTrackSong")
+    lastfm_track = models.ForeignKey("lastfm.Track")
     last_updated = models.DateTimeField(auto_now=True)
 
 class PlaylistUser(models.Model):

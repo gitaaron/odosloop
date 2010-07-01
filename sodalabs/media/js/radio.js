@@ -2,13 +2,14 @@ var Radio = {
     init : function() {
         $(document).bind('hrefChanged', function(e, diff) {
             if(diff.menu=='radio' || diff.r) {
-                console.log('hrefchanged');
-
                 if(diff.r) {
-                    console.log('diff.r');
                     Playlist.loadRadio(diff.r);
-                } else if (Playlist.currentSong || Playlist.currentSong==0) {
-                    console.log('no station found.. but song selected so using that');
+                } else if (Playlist.currentSong || parseInt(Playlist.currentSong)==0) {
+                    if (Playlist.currentSong==0) {
+                        console.log('equals zero');
+                    } else {
+                        console.log('does not equal zero');
+                    }
                     Radio.search(Playlist.getPlaylistSong(Playlist.currentListId, Playlist.currentSong));
                 }
             }
@@ -28,7 +29,6 @@ var Radio = {
             if(data['status'] =='ok') {
                 Radio.open(data['lastfm_track_id']);
             } else {
-                Playlist.getSongIdForSong('radio',playlist_song);
                 Playlist.markSongAsErred(playlist_song);
             }
         });       

@@ -6,23 +6,23 @@
 </script>
 
 <ul id="menu_list" class="vertical_list">
-    <li class="vertical_item"><a id="feed" class="action" >feed</a></li>
-    <li class="vertical_item"><a id="search" class="action" >search</a></li>
-    <li class="vertical_item"><a id="radio" class="action" >radio</a></li>
+    <li class="vertical_item"><a id="feed" href="javascript:void(0);" ><div>feed</div></a></li>
+    <li class="vertical_item"><a id="search"  href="javascript:void(0);" ><div>search</div></a></li>
+    <li class="vertical_item"><a id="radio"  href="javascript:void(0);" ><div>radio</div></a></li>
 
     {% if playlists %}
         {% for playlist in playlists %}
         <li class="vertical_item">
             <div id="playlist_item_{{playlist.id}}">
-            <a id="{{playlist.slug_name}}" class="action">{{playlist.name}}</a>
+                <a id="playlist_{{playlist.slug_name}}" href="javascript:void(0);"><div>{{playlist.name}}</div></a>
             {% ifmusiphileiscreator request.user playlist %}
-            <a href="javascript:void(0);" onclick="UserPlaylist.editPlaylistItem({{playlist.id}});">edit</a>
+            <a class="action" href="javascript:void(0);" onclick="UserPlaylist.editPlaylistItem({{playlist.id}});"><div>edit</div></a>
             {% endifmusiphileiscreator %}
             </div>
             {% ifmusiphileiscreator request.user playlist %}
                 <div class="editable_menu_item" id="editable_playlist_item_{{playlist.id}}" style="display:none" >
                     <input type="text" value="{{playlist.name}}" id="editable_playlist_name_{{playlist.id}}" />
-                    <a href="javascript:void(0);" onclick="UserPlaylist.savePlaylistItem({{playlist.id}});">save</a>
+                    <a class="action" href="javascript:void(0);" onclick="UserPlaylist.savePlaylistItem({{playlist.id}});">save</a>
                 </div>
             {% endifmusiphileiscreator %}
         </li>
@@ -31,7 +31,7 @@
 
 {% if show_create_button %}
 <li class="vertical_item">
-<a href="javascript:void(0);" onclick="UserPlaylist.create();">create new playlist</a>
+<a class="action" href="javascript:void(0);" onclick="UserPlaylist.create();"><div>create new playlist</div></a>
 </li>
 {% endif %}
 

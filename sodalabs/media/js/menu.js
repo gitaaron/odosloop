@@ -37,6 +37,10 @@ var Menu = {
 
     }, 
     setMenuItem : function(name) {
+        parts = name.split('_');
+        if (parts[0] == 'playlist') {
+            name='userplaylist';
+        }
         if (name!= Menu.menuItem) {
             Menu.menuItem = name;
             Menu.highlightMenuItem(name);
