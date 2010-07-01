@@ -7,6 +7,6 @@ def saved_playlist(request):
     if request.user.is_authenticated():
         musiphile = Musiphile.objects.from_request(request)
         if musiphile:
-            playlists = Playlist.objects.filter(users=musiphile)
+            user_playlists = Playlist.objects.filter(users=musiphile)
 
-    return {'saved_playlists':playlists}
+    return {'saved_playlists':user_playlists}
