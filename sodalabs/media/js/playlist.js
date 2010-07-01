@@ -13,6 +13,18 @@ var Playlist = {
     currentListId : false,
     currentSongOpened : false,
     lastSongLogged : false,
+    initialized : false,
+
+    init_once : function() {
+        if (!Playlist.initialized) {
+            Playlist.initialized = true;
+            $(document).bind('hrefChanged', function(e, diff) {
+                if(diff.song) {
+                    Playlist.playIfSongInPlaylist(lastfmTrackId);
+                }
+            });
+        }
+    },
 
     loadSearch : function(q) {
         $('#search_container').html('<h3>loading...</h3>');
@@ -67,6 +79,7 @@ var Playlist = {
         $('#loadingVideoDiv').css('display','block');
         $.get('/jukebox/get_closest_video/', song, function(data) {
                 if(data['status']=='ok') {
+                    DocString.add({'song':data['lastfm_track_id']});
                     $('title').html('odosloop - ' + song['artist'] + ' - ' + song['name']);
                     Playlist.currentSongOpened = data;
                     Playlist.play(data['video_id'], data['video_title']);
@@ -149,6 +162,14 @@ var Playlist = {
         songId = Playlist.currentSong+1;
         Playlist.open(Playlist.currentListId, songId);
     },
+
+    push : function(playlist_id, artist, name) {
+        if (!Playlist.songs[playlist_id]) {
+            Playlist.songs[playlist_id] = new Array();
+        }
+        length = Playlist.songs[playlist_id].push({'artist':artist, 'name':name});
+        return length;
+    }
 
 
 }
