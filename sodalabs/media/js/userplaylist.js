@@ -1,5 +1,4 @@
 var UserPlaylist = {
-    hash : {},
 
     init  : function() {
         $(document).bind('hrefChanged', function(e, diff) {
@@ -21,17 +20,15 @@ var UserPlaylist = {
         });
     },
 
-    addPlaylistSong : function(playlist_song, song_name, playlist_name, playlist_id) {
-    //addPlaylistSong : function(playlist_index, playlist_id) {
-    //
-    /*
-        hash = UserPlaylist.hash[playlist_index][playlist_id];
-        playlist_song = hash['playlist_song'];
-        song_name = hash['song_name'];
-        playlist_name = hash['playlist_name'];
-        playlist_id = hash['playlist_id'];
-        */
+    select : function(playlist_song_id, song_name, playlist_controller, userplaylist_name, userplaylist_id) { 
+        playlist_id = $(playlist_controller).attr('id').split('_')[2];
+        pl_song = Playlist.getPlaylistSong(playlist_id, playlist_song_id);
+        UserPlaylist.addPlaylistSong(pl_song, song_name, userplaylist_name, userplaylist_id); 
+    },
 
+
+
+    addPlaylistSong : function(playlist_song, song_name, playlist_name, playlist_id) {
         $.get('/jukebox/get_lastfm_track/', playlist_song, function(data) {
                 if(data['status'] =='ok') {
                     UserPlaylist.add(data['lastfm_track_id'], song_name, playlist_name, playlist_id);

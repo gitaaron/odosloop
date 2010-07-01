@@ -36,7 +36,7 @@ a.song { width:180px; }
 
 .editable_menu_item input { float:left; }
 
-.activated_userplaylist, .userplaylist_container { background:white; }
+.activated_userplaylist, .userplaylist_container { background:#dddddd; }
 .add_to_playlist, .userplaylist_container { width:111px; }
 
 .userplaylist_container a { width:100%; } 

@@ -54,20 +54,6 @@
             </script>
         {% endfor %}
 
-        <script type="text/javascript">
-            var LocalPlaylist = {
-                select : function(playlist_song_id, song_name, selected_em) { 
-                    pl_song = Playlist.getPlaylistSong('{{playlist_id}}', playlist_song_id);
-                    selected_option = $(selected_em).find('option:selected');
-                    playlist_id = selected_option.attr('value');
-                    playlist_name = selected_option.text();
-                    if (playlist_id!=-1) { 
-                        UserPlaylist.addPlaylistSong(pl_song, song_name, playlist_name, playlist_id); 
-                    }
-                }
-            }
-        </script>
-
         <ul id="track_list" class="vertical_list">
 
         {% for track in lastfm_tracks %}
@@ -87,7 +73,11 @@
                 <ul id="userplaylist_container_{{playlist_id}}_{{forloop.counter0}}" style="display:none;position:absolute;" class="vertical_list userplaylist_container">
                     {% with forloop.counter0 as track_loop_counter %}
                     {% for playlist in saved_playlists %}
-                    <li class="vertical_item"><a class="action" onclick="return LocalPlaylist.select('{{track_loop_counter}}', '{{track.name}}', $('#userplaylist_controler_{{playlist_id}}_{{track_loop_counter}}'));" href="javascript:void(0);"><div>{{playlist.name}}</div></a></li>
+                    <li class="vertical_item">
+                    <a class="action" onclick="return UserPlaylist.select('{{track_loop_counter}}', '{{track.name}}', $('#userplaylist_control_{{playlist_id}}_{{track_loop_counter}}'), '{{playlist.name}}', '{{playlist.id}}');" href="javascript:void(0);">
+                            <div>{{playlist.name}}</div>
+                        </a>
+                    </li>
                     {% endfor %}
                     {% endwith %}
                 </ul>
