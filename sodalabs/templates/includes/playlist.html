@@ -8,7 +8,7 @@
             <script type="text/javascript">
                 $(document).ready(function() {
                     qString = '{{track.name|escapejs}} {{track.artist|escapejs}}';
-                    length = Playlist.songs['{{playlist_id}}'].push({'artist':'{{track.artist|escapejs}}','name':'{{track.name|escapejs}}', 'q':'{{q}}'});
+                    length = Playlist.push('{{playlist_id}}', '{{track.artist|escapejs}}', '{{track.name|escapejs}}');
                     id = length-1;
                     $('#{{playlist_id}}_'+id).bind('click',function() {
                         comps = $(this).attr('id').split('_');
@@ -39,6 +39,11 @@
 
                 
             </script>
+        {% if forloop.last %}
+        <script type="text/javascript">
+            Playlist.init_once();
+        </script>
+        {% endif %}
         {% endfor %}
 
         <script type="text/javascript">
