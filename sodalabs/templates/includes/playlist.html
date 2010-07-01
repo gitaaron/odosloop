@@ -11,7 +11,8 @@
                     length = Playlist.songs['{{playlist_id}}'].push({'artist':'{{track.artist|escapejs}}','name':'{{track.name|escapejs}}', 'q':'{{q}}'});
                     id = length-1;
                     $('#{{playlist_id}}_'+id).bind('click',function() {
-                        id = $(this).attr('id').split('_')[1];
+                        comps = $(this).attr('id').split('_');
+                        id = comps[comps.length-1];
                         Playlist.open('{{playlist_id}}', id);
                     });
 
