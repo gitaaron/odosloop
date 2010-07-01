@@ -36,10 +36,15 @@
                     });
 
                 });
+
+                
+            </script>
+        {% endfor %}
+
+        <script type="text/javascript">
                 $(document).ready(function() {
 
                     $(document).bind('click', function(e) {
-                            e.stopImmediatePropagation();
                             $('.activated_userplaylist').each(function(index, elem) {
                                 playlist_id = $(elem).attr('id').split('_')[2];
                                 if (elem && e.target != elem && $(e.target).parent().attr('id') != $(elem).attr('id')) {
@@ -52,8 +57,7 @@
                     });
                 });
 
-            </script>
-        {% endfor %}
+        </script>
 
         <ul id="track_list" class="vertical_list">
 
