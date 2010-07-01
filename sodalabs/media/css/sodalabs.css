@@ -1,8 +1,13 @@
 /* general */
-body { background-color:#357545; } 
 ul.vertical_list { list-style-type:none; margin:0; padding:0; float:left;} 
 ul.vertical_list li.vertical_item { float:left; clear:both; width:100%; } 
 .horizontal_list li.horizontal_item { float:left; } 
+
+/* text colors */
+body { color:#111111; }
+ul#track_list a.song, h3 { color:#111111; }
+ul#menu_list a:hover, ul#track_list a.action:hover { background:#dddd55; color:#992288; } 
+h1 a, #login_container a, h1 a:visited, #login_container a:visited { color:#2222DD; }
 
 /* old stuffs */
 div#videoDiv { width:480px; height:295px; }
@@ -15,14 +20,26 @@ div#youtube_container h1, div#loadingVideoDiv h1 { height:45px;width:480px; over
 #youtube_container { height:352px; float:right;} 
 h1 { margin:0px; font-size:20px;} 
 #lastfm_container,.playlist_container { float:left; } 
+.playlist_container { width:400px; }
 
-li.now_playing,a.selected { color:#992288!important; background:#dddd55!important; } 
-ul#menu_list li, ul#recent_list li,ul#track_list li {color:#ffffff; } 
-ul#menu_list a, ul#recent_list a,ul#track_list a { padding:5px; text-decoration:none; float:left; }
-ul#menu_list .action:hover, ul#track_list .action:hover { background:#ff3333; } 
-a.recent_song { width:180px; }
+li.now_playing,a.selected { color:#992288!important; } 
+a.selected { background:#dddd55!important; } 
+li.now_playing div.playlist_name_items { background:#dddd55!important; }
+.playlist_name_items { float:left; }
+
+ul#menu_list li a,ul#track_list li a{text-decoration:none; float:left; } 
+ul#menu_list a div, ul#track_list a div { margin:5px; }
+
+a.song { width:180px; }
+
+#track_list a.add_to_playlist img { border:none; }
 
 .editable_menu_item input { float:left; }
+
+.activated_userplaylist, .userplaylist_container { background:white; }
+.add_to_playlist, .userplaylist_container { width:111px; }
+
+.userplaylist_container a { width:100%; } 
 
 /* popup */
 .loading_overlay { position:absolute; height:100%; width:100%; display:none; background:#999999 url(/site_media/img/ajax-loader.gif) no-repeat center center; opacity:0.6; }
@@ -30,7 +47,6 @@ a.recent_song { width:180px; }
 /* index */
 #menu_container { float:left; margin-right:10px; margin-top:20px;} 
 .lastfm_list_container,.list_container { float:left; margin-right:20px;} 
-.playlist_container { width:350px; } 
 
 /* header */
 div#header { float:left; width:100%; }
