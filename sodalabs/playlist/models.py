@@ -11,7 +11,10 @@ class Playlist(models.Model):
     creator = models.ForeignKey("accounts.Musiphile", related_name="creator")
 
     def save(self, **kwargs):
-        self.slug_name = slugify(self.name, instance=self, slug_field='slug_name')
+        name = self.name
+        if name=='anonymous':
+            name = name+'_';
+        self.slug_name = slugify(name, instance=self, slug_field='slug_name')
         super(Playlist, self).save(**kwargs)
 
 class PlaylistSong(models.Model):

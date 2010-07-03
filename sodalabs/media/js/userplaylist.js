@@ -26,7 +26,10 @@ var UserPlaylist = {
         UserPlaylist.addPlaylistSong(pl_song, song_name, userplaylist_name, userplaylist_id); 
     },
 
-
+    selectDummy : function(playlist_song_id, song_name, playlist_id, userplaylist_name) {
+        pl_song = Playlist.getPlaylistSong(playlist_id, playlist_song_id);
+        UserPlaylist.addPlaylistSong(pl_song, song_name, userplaylist_name, null);
+    },
 
     addPlaylistSong : function(playlist_song, song_name, playlist_name, playlist_id) {
         $.get('/jukebox/get_lastfm_track/', playlist_song, function(data) {
@@ -40,6 +43,10 @@ var UserPlaylist = {
         data = {'lastfm_track':lastfm_track_id};
         if(playlist_id) {
             data['playlist'] = playlist_id;
+        }
+
+        if(!playlist_name) {
+            playlist_name = 'unknown';
         }
 
         $.post('/playlist/add/', data, function(data) {

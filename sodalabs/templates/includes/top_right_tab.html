@@ -1,6 +1,6 @@
 {% if user.is_authenticated %}
-<a href="javascript:void(0);" onclick="DocString.add({'user':'{{user.username}}'});">{{user.username}}</a> | <a href="/accounts/logout">logout</a>
+    <a href="javascript:void(0);" onclick="DocString.add({'user':'{{user.username}}'});">{{user.username}}</a> | <a href="/accounts/logout">logout</a>
 {% else %}
-    <a href="/accounts/me">me</a> | <a onclick="return User.openLoginScreen();" href="/accounts/signup?next={{request.get_full_path}}">sign in</a>
+<a href="javascript:void(0);" onclick="DocString.add({'user':'me'});">me</a> | <a onclick="return User.openLoginScreen();" href="/accounts/signup?next={{request.get_full_path}}">sign in</a>
 {% endif %}
 

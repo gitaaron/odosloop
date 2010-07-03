@@ -27,7 +27,13 @@ class IsMusiphileCreatorNode(Node):
         if not musiphile or not playlist:
             return self.nodelist_false.render(context)
 
-        return self.nodelist_true.render(context) if musiphile==playlist.creator else self.nodelist_false.render(context)
+
+        try:
+            creator = playlist.creator
+        except AttributeError:
+            return self.nodelist_false.render(context)
+
+        return self.nodelist_true.render(context) if musiphile==creator else self.nodelist_false.render(context)
 
 def do_is_musiphile_creator(parser, token):
     bits = list(token.split_contents())

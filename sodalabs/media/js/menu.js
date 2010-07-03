@@ -8,6 +8,10 @@ var Menu = {
                 Menu.setMenuItem(diff.menu);
             }
             if(diff.user) {
+                user = diff.user;
+                if (user=='me') {
+                    user = '';
+                }
                 $.get('/playlist/menu/'+diff.user, function(data) {
                     $('#menu_container').html(data);
                 });

@@ -12,12 +12,19 @@ from sodalabs.playlist.models import PlaylistUser,Playlist,PlaylistSong
 from sodalabs.playlist.helpers import ordered_unique
 
 def get(request, slug_name):
-    try:
-        playlist = Playlist.objects.get(slug_name=slug_name)
-    except Playlist.DoesNotExist:
-        raise Http404()
+    if slug_name=='anonymous':
+        playlist = Playlist()
+        playlist.name = 'untitled playlist'
+        tracks = request.session.get('playlist',[])
+    else:
+        try:
+            playlist = Playlist.objects.get(slug_name=slug_name)
+        except Playlist.DoesNotExist:
+            raise Http404()
 
-    tracks = playlist.lastfm_track.all()
+        tracks = playlist.lastfm_track.all()
+
+    
     
     return direct_to_template(request, 'includes/playlist.html', {'playlist_id':'playlist_%s' % slug_name, 'playlist_title':playlist.name, 'lastfm_tracks':tracks})
 
@@ -25,17 +32,22 @@ def menu_list(request, username=None):
     show_create = False
     playlists = None
     if username:
-        try:
-            user = Musiphile.objects.get(username=username)
-        except Musiphile.DoesNotExist:
-            raise Http404()
+        if username=='me':
+            playlists = [];
+            playlists.append({'id':-1, 'name':'untitled playlist', 'slug_name':'anonymous'})
+        else:
+            try:
+                user = Musiphile.objects.get(username=username)
+            except Musiphile.DoesNotExist:
+                raise Http404()
 
-        playlists = Playlist.objects.filter(users=user)
+            playlists = Playlist.objects.filter(users=user)
 
 
-        if request.user.is_authenticated():
-            if request.user == user:
-                show_create = True
+            if request.user.is_authenticated():
+                if request.user == user:
+                    show_create = True
+
 
     return direct_to_template(request, 'includes/menu.html', {'playlists':playlists, 'show_create_button':show_create})
     
