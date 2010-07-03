@@ -4,7 +4,9 @@ function onYouTubePlayerReady(playerId) {
     ytplayer = document.getElementById('ytPlayer');
     ytplayer.addEventListener('onStateChange','Playlist.onPlayerStateChange');
     ytplayer.addEventListener('onError','Playlist.onPlayerError');
-    ytplayer.playVideo();
+    if(Playlist.userClickedPlay) {
+        ytplayer.playVideo();
+    }
 }
 
 var Playlist = {
@@ -14,17 +16,33 @@ var Playlist = {
     currentSongOpened : false,
     lastSongLogged : false,
     initialized : false,
+    userClickedPlay : false,
 
     init_once : function() {
         if (!Playlist.initialized) {
             Playlist.initialized = true;
-            $(document).bind('hrefChanged', function(e, diff) {
-                if(diff.song) {
-                    Playlist.playIfSongInPlaylist(lastfmTrackId);
-                }
-            });
+            song = DocString.get()['song'];
+            if (song) {
+                Playlist.playIfSongInPlaylist(song);
+            } 
         }
     },
+
+    playIfSongInPlaylist : function(lastfmTrackId) {
+        $.get('/lastfm/get/'+lastfmTrackId, function(data) {
+            playlist_id = DocString.get()['menu'];
+            if(!playlist_id) {
+                playlist_id = 'feed';
+            }
+
+            $.each(Playlist.songs[playlist_id], function(i, song) {
+                if(song['name']==data['name'] && song['artist']==data['artist']) {
+                    Playlist.open(playlist_id, i);
+                }
+            });
+        });
+    },
+
 
     loadSearch : function(q) {
         $('#search_container').html('<h3>loading...</h3>');

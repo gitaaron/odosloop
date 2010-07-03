@@ -1,6 +1,6 @@
 # Create your views here.
 import datetime
-import simplejson as json
+from django.utils import simplejson as json
 from django.http import HttpResponse,HttpResponseRedirect,Http404, HttpResponseNotAllowed
 from django.views.generic.simple import direct_to_template
 from django.shortcuts import render_to_response

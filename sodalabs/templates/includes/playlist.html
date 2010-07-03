@@ -11,6 +11,7 @@
                     length = Playlist.push('{{playlist_id}}', '{{track.artist|escapejs}}', '{{track.name|escapejs}}');
                     id = length-1;
                     $('#{{playlist_id}}_'+id).bind('click',function() {
+                        Playlist.userClickedPlay = true;
                         comps = $(this).attr('id').split('_');
                         id = comps[comps.length-1];
                         Playlist.open('{{playlist_id}}', id);

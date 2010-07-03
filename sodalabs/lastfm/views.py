@@ -1,7 +1,18 @@
 # Create your views here.
-from django.http import Http404
+from django.http import Http404, HttpResponse
 from django.views.generic.simple import direct_to_template
 from sodalabs.lastfm import make_lastfm_request,get_tracks,error_path,user_path
+from sodalabs.lastfm.models import Track
+
+from django.utils import simplejson as json
+
+def get(request, lastfm_id):
+    try:
+        track = Track.objects.get(id=lastfm_id)
+    except Track.DoesNotExist:
+        raise Http404()
+
+    return HttpResponse(json.dumps({'name':track.name,'artist':track.artist}), content_type="application/json")
 
 def search(request):
     q = request.GET.get('q', False)
