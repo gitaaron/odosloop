@@ -18,13 +18,15 @@
                     });
 
                     $('#radio_{{playlist_id}}_'+id).bind('click',function() {
-                        id = $(this).attr('id').split('_')[2];
+                        comps = $(this).attr('id').split('_');
+                        id = comps[comps.length-1];
                         lfm_id = Playlist.getPlaylistSong('{{playlist_id}}', id);
                         Radio.search(lfm_id);
                     });
 
                     $('#userplaylist_control_{{playlist_id}}_'+id).bind('click', function() {
-                        id = $(this).attr('id').split('_')[3];
+                        comps = $(this).attr('id').split('_');
+                        id = comps[comps.length-1];
 
                         //UserPlaylist.addPlaylistSong(id, '{{playlist_id}}');
                         var pos = $(this).offset();

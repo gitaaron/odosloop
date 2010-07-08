@@ -10,10 +10,10 @@ ul#menu_list a:hover, ul#track_list a.action:hover { background:#dddd55; color:#
 h1 a, #login_container a, h1 a:visited, #login_container a:visited { color:#2222DD; }
 
 /* old stuffs */
-div#videoDiv { width:480px; height:295px; }
-div#loadingVideoDiv { width:480px; height:352px; float:right; }
-div#loadingDummyVideo { width:480px; height:295px; background:#efcf22; }
-div#youtube_container h1, div#loadingVideoDiv h1 { height:45px;width:480px; overflow:hidden; }
+div#videoDiv { width:320px; height:180px; }
+div#loadingVideoDiv { width:320px; float:right; }
+div#loadingDummyVideo { width:320px; height:180px; background:#efcf22; }
+div#youtube_container h3, div#loadingVideoDiv h3 { height:43px;width:320px; overflow:hidden; margin:0px;}
 #lastfm_container li.vertical_item { font-size:14px;} 
 #lastfm_friends_container,#lastfm_neighbors_container, #user_playlist_container { overflow:hidden; } 
 #lastfm_recents_container { width:250px; overflow:hidden; } 

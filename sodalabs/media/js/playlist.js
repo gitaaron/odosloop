@@ -93,7 +93,7 @@ var Playlist = {
         Playlist.currentListId = playlist_id; 
         // show loading div and hide video container
         $('#youtube_container').css('display','none');
-        $('#youtube_container').html('<h1 id="title"></h1><div id="videoDiv"></div>');
+        $('#youtube_container').html('<h3 id="title"></h3><div id="videoDiv"></div>');
         $('#loadingVideoDiv').css('display','block');
         $.get('/jukebox/get_closest_video/', song, function(data) {
                 if(data['status']=='ok') {
@@ -150,12 +150,12 @@ var Playlist = {
         // The video to load.
         var videoID = id
         // Lets Flash from another domain call JavaScript
-        var params = { allowScriptAccess: "always" };
+        var params = { allowScriptAccess: "always" , height:180, width:320 };
         // The element id of the Flash embed
         var atts = { id: "ytPlayer" };
         // All of the magic handled by SWFObject (http://code.google.com/p/swfobject/)
         swfobject.embedSWF("http://www.youtube.com/v/" + videoID + "&enablejsapi=1&playerapiid="+API_KEY,
-                           "videoDiv", "480", "295", "8", null, null, params, atts);
+                           "videoDiv", "320", "180", "8", null, null, params, atts);
 
 
 

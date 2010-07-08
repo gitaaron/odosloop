@@ -1,15 +1,15 @@
 var Radio = {
+
+    hasLoadedList : false,
+
     init : function() {
         $(document).bind('hrefChanged', function(e, diff) {
             if(diff.menu=='radio' || diff.r) {
                 if(diff.r) {
+                    Radio.hasLoadedList = true;
                     Playlist.loadRadio(diff.r);
-                } else if (Playlist.currentSong || parseInt(Playlist.currentSong)==0) {
-                    if (Playlist.currentSong==0) {
-                        console.log('equals zero');
-                    } else {
-                        console.log('does not equal zero');
-                    }
+                } else if (Playlist.currentSong || parseInt(Playlist.currentSong)==0 && !Radio.hasLoadedList) {
+                    Radio.hasLoadedList = true;
                     Radio.search(Playlist.getPlaylistSong(Playlist.currentListId, Playlist.currentSong));
                 }
             }
