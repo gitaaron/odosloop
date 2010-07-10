@@ -25,9 +25,9 @@
                     });
 
                     $('#userplaylist_control_{{playlist_id}}_'+id).bind('click', function() {
+
                         comps = $(this).attr('id').split('_');
                         id = comps[comps.length-1];
-
                         //UserPlaylist.addPlaylistSong(id, '{{playlist_id}}');
                         var pos = $(this).offset();
                         var width = $(this).width();
@@ -55,7 +55,7 @@
                     $(document).bind('click', function(e) {
                             $('.activated_userplaylist').each(function(index, elem) {
                                 playlist_id = $(elem).attr('id').split('_')[2];
-                                if (elem && e.target != elem && $(e.target).parent().attr('id') != $(elem).attr('id')) {
+                                if (elem && e.target != elem && $(e.target).parent().attr('id') != $(elem).attr('id') && $(e.target).parent().parent().attr('id') != $(elem).attr('id')) {
                                     var id = $(elem).attr('id').split('_')[3];
                                     menu = $('#userplaylist_container_' + playlist_id + '_'+id);
                                     menu.hide();
@@ -78,10 +78,10 @@
                     <a class="action" id="radio_{{playlist_id}}_{{forloop.counter0}}" href="javascript:void(0);"><div>radio</div></a>
 
 
-                {% if saved_playlists %}
                 <a class="action add_to_playlist" id="userplaylist_control_{{playlist_id|escapejs}}_{{forloop.counter0}}" href="javascript:void(0);"><div>add to playlist <img src="/site_media/img/arrow-down.png" /></div></a>
                 <ul id="userplaylist_container_{{playlist_id|escapejs}}_{{forloop.counter0}}" style="display:none;position:absolute;" class="vertical_list userplaylist_container">
                     {% with forloop.counter0 as track_loop_counter %}
+                    {% if saved_playlists %}
                     {% for playlist in saved_playlists %}
                     <li class="vertical_item">
                     <a class="action" onclick="return UserPlaylist.select('{{track_loop_counter}}', '{{track.name|escapejs}}', $('#userplaylist_control_{{playlist_id|escapejs}}_{{track_loop_counter}}'), '{{playlist.name|escapejs}}', '{{playlist.id|escapejs}}');" href="javascript:void(0);">
@@ -89,12 +89,22 @@
                         </a>
                     </li>
                     {% endfor %}
+                    {% else %}
+                    <li class="vertical_item">
+                    <a class="action" onclick="return UserPlaylist.selectDummy('{{forloop.counter0}}', '{{track.name|escapejs}}', '{{playlist_id|escapejs}}'), 'untitled playlist');" href="javascript:void(0);">
+                            <div>untitled</div>
+                    </a>
+                    </li>
+
+                    {% endif %}
                     {% endwith %}
                 </ul>
                 
-                {% else %}
+                
+
+                {% comment %}
                 <a class="action add_to_playlist" onclick="return UserPlaylist.selectDummy('{{forloop.counter0}}', '{{track.name|escapejs}}', '{{playlist_id|escapejs}}', 'untitled playlist');" href="javascript:void(0);" ><div>add to playlist</div></a>
-                {% endif %}
+                {% endcomment %}
                 </div>
 
             </li>
