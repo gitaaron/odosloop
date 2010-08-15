@@ -102,8 +102,12 @@ var Playlist = {
         $.get('/jukebox/get_closest_video/', song, function(data) {
                 if(data['status']=='ok') {
                     DocString.add({'song':data['lastfm_track_id']});
-                    
-                    $('#browser_title').html('odosloop - ' + song['artist'] + ' - ' + song['name']);
+                    var t =  'odosloop - ' + song['artist'] + ' - ' + song['name'];
+                    try {
+                        $('#browser_title').html(t);
+                    } catch(err) { 
+                        document.title = t; 
+                    }
 
                     Playlist.currentSongOpened = data;
 

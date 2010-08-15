@@ -1,5 +1,10 @@
 var Search = {
     init : function() {
+
+        $('#music_search_form input').bind('click', function() {
+            $(this).attr('value','');
+        });
+
         $('#music_search_form').submit(function() {
             form = $('#music_search_form')
             q = form.children().filter('input[name|=q]');

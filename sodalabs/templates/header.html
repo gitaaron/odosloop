@@ -1,8 +1,12 @@
 <div id="header">
 <h1><a href="/">ODOSLOOP</a></h1>
 <form id="music_search_form" action="/" method="get">
-    <input type="text" {% if q %} value="{{q}}" {% endif %} name="q" />
-    <button type="submit">Search Music</button>
+    {% if q  %}
+    <input type="text" value="{{q}}" name="q" />
+    {% else %}
+    <input type="text" value="Search Music" name="q" />
+    {% endif %}
+    <button type="submit" alt="search music button"></button>
 </form>
 
 <div id="login_container">
@@ -11,5 +15,5 @@
 
 </div>
 <div id="sub_header">
-    <h3>Find and Share Music</h3>
+    <h3>Music Sharing for the 22nd Century</h3>
 </div>
