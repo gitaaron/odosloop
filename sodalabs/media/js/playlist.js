@@ -4,7 +4,7 @@ function onYouTubePlayerReady(playerId) {
     ytplayer = document.getElementById('ytPlayer');
     ytplayer.addEventListener('onStateChange','Playlist.onPlayerStateChange');
     ytplayer.addEventListener('onError','Playlist.onPlayerError');
-    if(Playlist.shouldPlayImmediately) {
+    if(Playlist.shouldAutoPlay) {
         ytplayer.playVideo();
     }
 }
@@ -189,7 +189,7 @@ var Playlist = {
     },
     
     goToNext : function() {
-        Playlist.shouldPlayImmediately = true;
+        Playlist.shouldAutoPlay = true;
         songId = Playlist.currentSong+1;
         Playlist.open(Playlist.currentListId, songId);
     },
