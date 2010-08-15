@@ -1,7 +1,7 @@
 var DocString = {
 
     currentState : false,
-
+    isFirst : true,
     init : function() {
         setTimeout('DocString.pollHref()',500);
     },
@@ -31,28 +31,31 @@ var DocString = {
 
     // poll the href and when it changes dispatch an event
     pollHref : function() {
-        
+
         href = document.location.href;
+
         data = DocString.toDict(href);
+
         currentData = DocString.currentState;
-        isFirst = false;
+
         if (!currentData) {
-            isFirst = true;
             currentData = {};
         }
-        if (!DocString.objectsAreSame(currentData,data)||isFirst) {
-            diff = DocString.getDiff(currentData,data);
-            if(isFirst) {
-                diff['isFirst'] = true;
-            }
+        diff = DocString.getDiff(currentData,data);
+        if (!DocString.objectsAreSame(currentData,data)) {
 
-            if(isFirst && !diff['menu']) {
-                diff['menu'] = 'feed';
+            if (DocString.isFirst) {
+                diff['isFirst'] = true;
             }
             DocString.currentState = data;
             $(document).trigger('hrefChanged', diff);
-        }
 
+        } else if (DocString.isFirst) {
+
+            diff['isFirst'] = true;
+            $(document).trigger('hrefChanged', diff);
+        }
+        DocString.isFirst = false;
         setTimeout('DocString.pollHref()',500); 
     },
 
@@ -98,7 +101,9 @@ var DocString = {
         dict = {}
         for (i in key_vals) {
             key_val = key_vals[i];
-            [key,val] = key_val.split('=');
+            split = key_val.split('=');
+            key = split[0];
+            val = split[1];
             dict[key] = val;
         }
         return dict;

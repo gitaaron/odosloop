@@ -8,8 +8,11 @@
             <script type="text/javascript">
                 $(document).ready(function() {
                     qString = '{{track.name|escapejs}} {{track.artist|escapejs}}';
-                    length = Playlist.push('{{playlist_id}}', '{{track.artist|escapejs}}', '{{track.name|escapejs}}');
-                    id = length-1;
+
+                    len = Playlist.push('{{playlist_id}}', '{{track.artist|escapejs}}', '{{track.name|escapejs}}');
+
+                    id = len-1;
+
                     $('#{{playlist_id}}_'+id).bind('click',function() {
                         Playlist.userClickedPlay = true;
                         comps = $(this).attr('id').split('_');
@@ -79,12 +82,12 @@
 
 
                 <a class="action add_to_playlist" id="userplaylist_control_{{playlist_id|escapejs}}_{{forloop.counter0}}" href="javascript:void(0);"><div>add to playlist <img src="/site_media/img/arrow-down.png" /></div></a>
-                <ul id="userplaylist_container_{{playlist_id|escapejs}}_{{forloop.counter0}}" style="display:none;position:absolute;" class="vertical_list userplaylist_container">
+                <ul class="userplaylist_container vertical_list" id="userplaylist_container_{{playlist_id|escapejs}}_{{forloop.counter0}}" style="display:none;position:absolute;" class="vertical_list userplaylist_container">
                     {% with forloop.counter0 as track_loop_counter %}
                     {% if saved_playlists %}
                     {% for playlist in saved_playlists %}
                     <li class="vertical_item">
-                    <a class="action" onclick="return UserPlaylist.select('{{track_loop_counter}}', '{{track.name|escapejs}}', $('#userplaylist_control_{{playlist_id|escapejs}}_{{track_loop_counter}}'), '{{playlist.name|escapejs}}', '{{playlist.id|escapejs}}');" href="javascript:void(0);">
+                    <a class="action" onclick="return UserPlaylist.select('{{track_loop_counter}}', '{{playlist_id|escapejs}}', '{{playlist.name|escapejs}}', '{{playlist.id|escapejs}}');" href="javascript:void(0);">
                             <div>{{playlist.name}}</div>
                         </a>
                     </li>

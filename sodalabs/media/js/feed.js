@@ -1,11 +1,17 @@
 var Feed = {
+
+    loaded : false,
+
     init : function() {
      $(document).bind('hrefChanged', function(e, diff) {
-            if(diff.menu=='feed' && !$('feed_container').html()) { 
+            if(diff.menu=='feed' && ! Feed.loaded) { 
                 Playlist.loadFeed();    
-            } else if(diff.isFirst) {
+                Feed.loaded = true;
+            } else if(diff.isFirst && ! diff.menu) {
                 Playlist.loadFeed(); 
+                Feed.loaded = true;
             }
+
         });
 
 

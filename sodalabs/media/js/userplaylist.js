@@ -11,7 +11,38 @@ var UserPlaylist = {
             }
         });
 
+        e_m = User.eventManager;
+        $(e_m).bind('user_login', UserPlaylist.update);
+
     },
+
+    update : function() {
+        $.get('/playlist/json_list/', function(data) {
+            if (data['status']=='ok') {
+                playlists = data['playlists'];
+                html = '\
+    <li class="vertical_item">\
+        <a class="action" onclick="return UserPlaylist.select(\'<#= playlist_song_id #>\', \'<#= playlist_id #>\', \'<#= userplaylist_name #>\', \'<#= userplaylist_id #>\');">\
+            <div><#= userplaylist_name #></div>\
+        </a>\
+    </li>';
+                $('.userplaylist_container').each(function() {
+                    elem = this;
+                    id = $(elem).attr('id');
+                    comps = id.split('_')
+                    playlist_id = comps[comps.length-2];
+                    playlist_song_id = comps[comps.length-1]; 
+                    list_elems_html = '';
+                    $.each(playlists, function(k,userplaylist) {
+                        list_elems_html += template.parse(html, {playlist_song_id:playlist_song_id, playlist_id:playlist_id, userplaylist_name:userplaylist['name'], userplaylist_id:userplaylist['id']});
+                    });
+                    $(elem).html(list_elems_html);
+                }); 
+
+            }
+        });
+    },
+
     create : function() {
         $.post('/playlist/create/', function() {
                 $.get('/playlist/menu/'+DocString.get()['user'], function(data) {
@@ -20,9 +51,9 @@ var UserPlaylist = {
         });
     },
 
-    select : function(playlist_song_id, song_name, playlist_controller, userplaylist_name, userplaylist_id) { 
-        playlist_id = $(playlist_controller).attr('id').split('_')[2];
+    select : function(playlist_song_id, playlist_id, userplaylist_name, userplaylist_id) { 
         pl_song = Playlist.getPlaylistSong(playlist_id, playlist_song_id);
+        song_name = pl_song['name'];
         UserPlaylist.addPlaylistSong(pl_song, song_name, userplaylist_name, userplaylist_id); 
     },
 

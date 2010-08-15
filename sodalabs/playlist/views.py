@@ -50,7 +50,18 @@ def menu_list(request, username=None):
 
 
     return direct_to_template(request, 'includes/menu.html', {'playlists':playlists, 'show_create_button':show_create})
-    
+
+@login_required
+def json_list(request):
+    musiphile = Musiphile.objects.from_request(request)
+    if not musiphile:
+        return HttpResponse(json.dumps({'status':'failed','message':'User is not a musiphile'}), content_type="application/json")
+   
+    playlists = Playlist.objects.filter(users=musiphile)
+
+    l = [{'id':p.id,'name':p.name} for p in playlists]
+    return HttpResponse(json.dumps({'status':'ok', 'playlists':l}), content_type="application/json")
+
 def add(request):
     if request.method!="POST":
         return ResponseNotAllowed(['POST'])

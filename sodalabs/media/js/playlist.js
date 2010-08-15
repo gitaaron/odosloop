@@ -21,10 +21,13 @@ var Playlist = {
     init_once : function() {
         if (!Playlist.initialized) {
             Playlist.initialized = true;
+
             song = DocString.get()['song'];
+
             if (song) {
                 Playlist.playIfSongInPlaylist(song);
             } 
+
         }
     },
 
@@ -86,6 +89,7 @@ var Playlist = {
     },
 
     open : function(playlist_id, songId) {
+
         songId = parseInt(songId);
         song = Playlist.songs[playlist_id][songId];
 
@@ -98,11 +102,15 @@ var Playlist = {
         $.get('/jukebox/get_closest_video/', song, function(data) {
                 if(data['status']=='ok') {
                     DocString.add({'song':data['lastfm_track_id']});
-                    $('title').html('odosloop - ' + song['artist'] + ' - ' + song['name']);
+                    
+                    $('#browser_title').html('odosloop - ' + song['artist'] + ' - ' + song['name']);
+
                     Playlist.currentSongOpened = data;
+
                     Playlist.play(data['video_id'], data['video_title']);
 
                     setTimeout("Playlist.saveSongAsPlayed(" + escape(songId) + ","+escape(data['lastfm_track_song_id'])+")", 20000);
+
 
                 } else { 
                     Playlist.markSongAsErred(playlist_id, songId);
@@ -182,11 +190,17 @@ var Playlist = {
     },
 
     push : function(playlist_id, artist, name) {
-        if (!Playlist.songs[playlist_id]) {
+
+        if (!Playlist.songs[playlist_id].length) {
             Playlist.songs[playlist_id] = new Array();
         }
-        length = Playlist.songs[playlist_id].push({'artist':artist, 'name':name});
-        return length;
+
+        var obj = {'artist':artist, 'name':name};
+        arr = Playlist.songs[playlist_id];
+        arr.push(obj);
+
+        l = arr.length;
+        return l;
     }
 
 

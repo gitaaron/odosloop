@@ -21,6 +21,7 @@ var Menu = {
         if (DocString.get()['menu']) { 
             Menu.setMenuItem(DocString.get()['menu']);
         } else {
+
             Menu.setMenuItem('feed');
         }
 
