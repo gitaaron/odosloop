@@ -4,7 +4,7 @@ function onYouTubePlayerReady(playerId) {
     ytplayer = document.getElementById('ytPlayer');
     ytplayer.addEventListener('onStateChange','Playlist.onPlayerStateChange');
     ytplayer.addEventListener('onError','Playlist.onPlayerError');
-    if(Playlist.userClickedPlay) {
+    if(Playlist.shouldPlayImmediately) {
         ytplayer.playVideo();
     }
 }
@@ -16,7 +16,7 @@ var Playlist = {
     currentSongOpened : false,
     lastSongLogged : false,
     initialized : false,
-    userClickedPlay : false,
+    shouldPlayImmediately : false,
 
     init_once : function() {
         if (!Playlist.initialized) {
@@ -189,6 +189,7 @@ var Playlist = {
     },
     
     goToNext : function() {
+        Playlist.shouldPlayImmediately = true;
         songId = Playlist.currentSong+1;
         Playlist.open(Playlist.currentListId, songId);
     },
