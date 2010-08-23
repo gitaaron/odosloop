@@ -32,7 +32,6 @@ li.now_playing div.playlist_name_items { background:#dddd55!important; }
 .playlist_name_items { float:left; }
 
 ul#menu_list li a,ul#track_list li a{text-decoration:none; float:left; } 
-ul#menu_list li a { width:100%; }
 ul#menu_list a div, ul#track_list a div { margin:5px; }
 ul#menu_list li { width:100%; }
 
