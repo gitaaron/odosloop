@@ -35,6 +35,45 @@ def get_lastfm_track(request):
 
     return HttpResponse(json.dumps(dict), content_type="application/json")
 
+def search_closest_video(request):
+    search = request.GET.get('q','')
+
+
+    client = gdata.youtube.service.YouTubeService()
+    client.developer_key = YOUTUBE_API_KEY
+    query = gdata.youtube.service.YouTubeVideoQuery()
+
+    query.vq = _unescape(urllib.unquote(search))
+    query.max_results = 25
+    try:
+        feed = client.YouTubeQuery(query)
+    except KeyError:
+        return HttpResponse(json.dumps({'status':'failed','message':'a problem occured while searching youtube for the appropriate song'}),content_type="application/json")
+    video_id = ''
+    embedable_found = False
+    for entry in feed.entry:
+        if not entry.noembed:
+            embedable_found = True
+            break
+
+    if not feed.entry:
+        return HttpResponse(json.dumps({'status':'failed', 'message':'no results returned'}),content_type="application/json")
+    elif not embedable_found:
+        return HttpResponse(json.dumps({'status':'failed', 'message':'no embedable songs found'}),content_type="application/json")
+    else:
+        # see if this song already exists
+        video_id = entry.id.text.split('/').pop()
+        video_title = entry.title.text 
+        
+        dict = {'status':'ok', 'video_id':entry.id.text.split('/').pop(), 'video_title':entry.title.text}
+        dump = json.dumps(dict)
+        callback = request.GET.get('callback', False)
+        if callback:
+            dump = '%s(%s)' % (callback, dump)
+        return HttpResponse(dump, content_type="application/json")
+
+   
+
 def get_closest_video(request):
     client = gdata.youtube.service.YouTubeService()
     client.developer_key = YOUTUBE_API_KEY
@@ -50,7 +89,6 @@ def get_closest_video(request):
     # see if lastfm track already exists
     track = _create_track(name,artist,q)
     search = artist + ' - ' + name
-
 
     query.vq = _unescape(urllib.unquote(search))
     query.max_results = 25
