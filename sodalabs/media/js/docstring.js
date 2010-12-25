@@ -69,7 +69,8 @@ var DocString = {
         hash_str = DocString.toString(currentVals);
 
         new_href = document.location.href.split('#')[0] + hash_str;
-        document.location.href = new_href;
+        eURI = encodeURI(new_href);
+        document.location.href = eURI;
     },
 
     // return all values as dict of key value pairs
@@ -95,6 +96,7 @@ var DocString = {
 
     // take urlencoded href and return dict of key value pairs
     toDict : function(href) {
+        href = decodeURI(href);
         href = href.split('#')[1]; 
         if(href) {
         key_vals = href.split('&');
