@@ -11,7 +11,7 @@ function onYouTubePlayerReady(playerId) {
 
 var Playlist = {
     songs : new Array(),
-    currentSong : false,
+    currentSong : -1,
     currentListId : false,
     currentSongOpened : false,
     lastSongLogged : false,
@@ -85,6 +85,15 @@ var Playlist = {
                         console.log('song_played result failed because : ' + data['message']);
                     }
             });
+            username = localStorage.getItem('gtalk_username');
+            password = localStorage.getItem('gtalk_password');
+            if(username && password) {
+                $.post('/accounts/gtalk/' + lastFMTrackSongId + '/', {'username':username, 'password':password});
+                console.log('posted');
+            } else {
+                console.log('no username or pwd');
+            }
+
         } 
     },
 
@@ -113,7 +122,7 @@ var Playlist = {
 
                     Playlist.play(data['video_id'], data['video_title']);
 
-                    setTimeout("Playlist.saveSongAsPlayed(" + escape(songId) + ","+escape(data['lastfm_track_song_id'])+")", 20000);
+                    setTimeout("Playlist.saveSongAsPlayed(" + escape(songId) + ","+escape(data['lastfm_track_song_id'])+")", 2000);
 
 
                 } else { 
@@ -162,9 +171,9 @@ var Playlist = {
         // The video to load.
         var videoID = id
         // Lets Flash from another domain call JavaScript
-        var params = { allowScriptAccess: "always" , height:180, width:320 };
+        var params = { allowScriptAccess: "always" , height:180, width:320, wmode:'opaque'};
         // The element id of the Flash embed
-        var atts = { id: "ytPlayer" };
+        var atts = { id: "ytPlayer" , 'wmode':'opaque'};
         // All of the magic handled by SWFObject (http://code.google.com/p/swfobject/)
         swfobject.embedSWF("http://www.youtube.com/v/" + videoID + "&enablejsapi=1&playerapiid="+API_KEY,
                            "videoDiv", "320", "180", "8", null, null, params, atts);

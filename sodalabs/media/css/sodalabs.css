@@ -76,11 +76,12 @@ div#sub_header { float:left; width:100%; border-bottom:thin solid #aaaaaa; }
 #sub_header h3 { margin:10px 0 10px 0; }
 
 /* sign in page */
-#container div#signup_container {
+#container .popup_container {
     display:none;
     position:absolute;
     top:79px;
     background:#222211;
+    z-index:5;
 }
 
 .signup_page #title a { 
@@ -119,14 +120,14 @@ ul.errorlist {
     margin-top:20px; 
     padding-top:10px; 
 } 
-#register_form_container, #login_form_container{
+#register_form_container, #login_form_container, #gtalk_form_container {
     float:left; 
     background:#aaaaaa; 
     padding:10px;
     margin:23px;
 }
 
-div#signup_container .closePanel { position:absolute; right:5px; top:2px; }
+.popup_container .closePanel { position:absolute; right:5px; top:2px; }
 
 #register_form_container form {
     width:336px;

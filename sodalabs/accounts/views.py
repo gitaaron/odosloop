@@ -19,6 +19,8 @@ from sodalabs.jukebox.models import LastFMTrackSong
 from sodalabs.playlist.helpers import ordered_unique
 from sodalabs.playlist.models import PlaylistUser
 
+from sodalabs.push.gtalk_presence import PresenceBot
+
 
 @login_required
 def profile(request, username=None):
@@ -55,6 +57,29 @@ def anonymous(request):
 def flush(request):
     request.session.flush()
     return HttpResponse('ok')
+
+def gtalk(request, lastfm_track_song_id):
+    if request.method!='POST':
+        return HttpResponseNotAllowed(['POST'])
+
+    username = request.POST.get('username', False)
+    password = request.POST.get('password', False)
+    if not username or not password:
+        return HttpResponseBadRequest()
+
+    try:
+        lastfm_track_song = LastFMTrackSong.objects.get(id=lastfm_track_song_id)
+    except LastFMTrackSong.DoesNotExist:
+        return HttpResponse(json.dumps({'status':'failed', 'message':'Could not find song for speicified id : ' + lastfm_track_song_id}), content_type='application/json')
+
+    track = lastfm_track_song.lastfm_track
+    name = track.name
+    artist = track.artist
+
+    status = '%s - %s | ODOSLOOP.com' % (name, artist)
+    pbot = PresenceBot(username, password, status)
+    return HttpResponse(json.dumps({'status':'ok'}), content_type='application/json')
+
 
 def song_played(request,lastfm_track_song_id):
     try:

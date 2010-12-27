@@ -41,7 +41,10 @@ var Menu = {
         */
 
     }, 
+
     setMenuItem : function(name) {
+        Playlist.currentListId = name;
+        Playlist.currentSong = -1;
         parts = name.split('_');
         if (parts[0] == 'playlist') {
             name='userplaylist';

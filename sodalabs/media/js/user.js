@@ -17,7 +17,7 @@ var User = {
 
     userSelected : function(e, diff) {
         if(diff.user) {
-            $('#sub_header').html('<h3>'+diff['user']+'</h3>');
+            $('#sub_header').html('<h3>'+diff['user']+' | <a href="javascript:void(0);" onclick="User.openGtalkScreen();">Google Talk</a></h3>');
         }
     },
 
@@ -39,6 +39,33 @@ var User = {
 
     closeLoginScreen : function() {
         $('#signup_container').css({'display':'none'});
+        return false;
+    },
+
+    openGtalkScreen : function() {
+        username = localStorage.getItem('gtalk_username');
+        password = localStorage.getItem('gtalk_password');
+        if (username) {
+            $('#gtalk_username').attr('value', username);
+        }
+        if (password) {
+            $('#gtalk_password').attr('value', password);
+        }
+        $('#gtalk_container').css('display','block');
+        return false;
+    },
+
+    closeGtalkScreen : function() {
+        $('#gtalk_container').css('display','none');
+        return false;
+    },
+
+    handleGtalkSubmit : function() {
+        username = $('#gtalk_username').attr('value');
+        password = $('#gtalk_password').attr('value');
+        localStorage.setItem('gtalk_username', username);
+        localStorage.setItem('gtalk_password', password);
+        User.closeGtalkScreen();
         return false;
     },
 

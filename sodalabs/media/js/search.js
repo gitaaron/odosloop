@@ -15,6 +15,7 @@ var Search = {
         $(document).bind('hrefChanged', function(e, diff) {
                 if(diff.q) {
                     Playlist.loadSearch(diff.q);
+                    $('#search_me').attr('value', diff.q);
                 }
         });
 

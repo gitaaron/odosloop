@@ -38,6 +38,21 @@
   <div id="container">
     {% include "accounts/signup_sub.html" %}
     {% include "header.html" %}
+    <div id="gtalk_container" class="popup_container">
+        <a href="javascript:void(0);" title="close window" onclick="return User.closeGtalkScreen();" class="closePanel panelLink">close</a>
+        <div id="gtalk_form_container">
+        
+            <h1>Enter your gtalk credentials here</h1>
+            <form id="gtalk_form" onsubmit="return User.handleGtalkSubmit();">
+                <table>
+                    <tr><th>Username</th><td><input type="text" id="gtalk_username" /></td></tr>
+                    <tr><th>Password</th><td><input type="password" id="gtalk_password" /></td></tr>
+                    <tr><td><button type="submit">Submit</button></td></tr>
+                </table>
+            </form>
+        </div>
+    </div>
+
     <div id="content" class="{% block content_class %}{% endblock %}">
       {% block content %}{% endblock %}
     </div>
