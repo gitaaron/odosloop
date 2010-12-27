@@ -13,8 +13,8 @@
     {% if playlists %}
         {% for playlist in playlists %}
         <li class="vertical_item">
-            <div id="playlist_item_{{playlist.id}}">
-                <a id="playlist_{{playlist.slug_name}}" href="javascript:void(0);"><div>{{playlist.name}}</div></a>
+            <div id="playlist_item_{{playlist.id}}" class="playlist_item">
+                <a class="playlist_link" id="playlist_{{playlist.slug_name}}" href="javascript:void(0);" title="{{playlist.name}}" ><div>{{playlist.name}}</div></a>
             {% ifmusiphileiscreator request.user playlist %}
             <a class="action" href="javascript:void(0);" onclick="UserPlaylist.editPlaylistItem({{playlist.id}});"><div>edit</div></a>
             {% endifmusiphileiscreator %}

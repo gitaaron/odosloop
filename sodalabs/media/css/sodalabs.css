@@ -183,3 +183,5 @@ ul.errorlist {
 .field_error_msg {
     color:#ee0000;
 }
+
+.playlist_item a.playlist_link div { width:100px; overflow:hidden; height:19px; } 
