@@ -122,7 +122,7 @@ var Playlist = {
 
                     Playlist.play(data['video_id'], data['video_title']);
 
-                    setTimeout("Playlist.saveSongAsPlayed(" + escape(songId) + ","+escape(data['lastfm_track_song_id'])+")", 2000);
+                    setTimeout("Playlist.saveSongAsPlayed(" + escape(songId) + ","+escape(data['lastfm_track_song_id'])+")", 20000);
 
 
                 } else { 
