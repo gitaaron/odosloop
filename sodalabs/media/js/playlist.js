@@ -89,6 +89,7 @@ var Playlist = {
             password = localStorage.getItem('gtalk_password');
             if(username && password) {
                 $.post('/accounts/gtalk/' + lastFMTrackSongId + '/', {'username':username, 'password':password});
+                console.log('post');
             } else {
                 console.log('no username or pwd');
             }
