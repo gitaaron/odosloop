@@ -18,15 +18,15 @@ class PresenceBot(sleekxmpp.ClientXMPP):
         self.add_event_handler('sent_prsence', self.sent_presence)
 
         self.presence = presence
-
+        
         if self.connect(('talk.google.com', 5222)):
-            self.process(threaded=False)
+            self.process(threaded=True)
             print 'Done'
         else:
             print 'Unable to connect'
 
     def start(self, event):
-        self.getRoster()
+        #self.getRoster()
         self.sendPresence(pstatus=self.presence)
 
     def sent_presence(self, event):
