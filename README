@@ -1,0 +1,11 @@
+ODOSLOOP 
+--------
+
+This project is on django.  To get started you first download/install django then you do something like -
+   ~:./manage.py runserver 8082
+
+Requirements
+------------
+    * django
+    * google data python client (http://code.google.com/p/gdata-python-client/) 
+    * simplejson 
