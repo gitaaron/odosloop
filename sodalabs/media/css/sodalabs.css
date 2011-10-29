@@ -9,6 +9,7 @@ body { color:#111111; }
 ul#track_list a.song, h3 { color:#111111; }
 ul#menu_list a:hover, ul#track_list a.action:hover { background:#dddd55; color:#992288; } 
 h1 a, #login_container a, h1 a:visited, #login_container a:visited { color:#2222DD; }
+#login_container { margin-top:18px; }
 
 /* old stuffs */
 div#videoDiv { width:320px; height:180px; }
@@ -56,6 +57,7 @@ a.song { width:306px; }
 
 /* header */
 #header h1 { font-size:27pt; width:235px; }
+#header #music_search_form { position:absolute; left:200px; top:30px;}
 #header #music_search_form input { color:#666666; width:400px; height:30px; font-size:29px; float:left;} 
 #header #login_container { font-size:15pt; }
 #header #music_search_form button { 
@@ -185,3 +187,6 @@ ul.errorlist {
 }
 
 .playlist_item a.playlist_link div { width:100px; overflow:hidden; height:19px; } 
+
+
+#catch_phrase { position:absolute; left:200px; top:77px; color:#333; font-weight:normal;}
