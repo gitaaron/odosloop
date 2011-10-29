@@ -175,7 +175,7 @@ var Playlist = {
         // The element id of the Flash embed
         var atts = { id: "ytPlayer" , 'wmode':'opaque'};
         // All of the magic handled by SWFObject (http://code.google.com/p/swfobject/)
-        swfobject.embedSWF("http://www.youtube.com/v/" + videoID + "&enablejsapi=1&playerapiid="+API_KEY,
+        swfobject.embedSWF("http://www.youtube.com/v/" + videoID + "&version=3&enablejsapi=1&playerapiid="+API_KEY,
                            "videoDiv", "320", "180", "8", null, null, params, atts);
 
 
