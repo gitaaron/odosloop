@@ -32,6 +32,7 @@ var Playlist = {
     },
 
     playIfSongInPlaylist : function(lastfmTrackId) {
+        console.log('playif');
         $.get('/lastfm/get/'+lastfmTrackId, function(data) {
             playlist_id = DocString.get()['menu'];
             if(!playlist_id) {
@@ -97,10 +98,26 @@ var Playlist = {
         } 
     },
 
-    open : function(playlist_id, songId) {
+    remove : function(playlist_id, song_id) {
+        console.log('remove song : ' + playlist_id + ' song_id : ' + song_id);
+        song = Playlist.songs[playlist_id][song_id];
+        song.removed = true;
+    },
 
+    open : function(playlist_id, songId) {
+        console.log('open playlist_id : ' + playlist_id + ' songId : ' + songId + ' length : ' + Playlist.songs[playlist_id].length);
+        // if last song remove class 
+        if(songId==Playlist.songs[playlist_id].length) {
+            $('.now_playing').removeClass('now_playing');
+            return;
+        }
         songId = parseInt(songId);
         song = Playlist.songs[playlist_id][songId];
+
+        if(song.removed) {
+            Playlist.open(playlist_id, ++songId);
+            return;
+        } 
 
         Playlist.currentSong = songId;
         Playlist.currentListId = playlist_id; 
@@ -209,7 +226,7 @@ var Playlist = {
             Playlist.songs[playlist_id] = new Array();
         }
 
-        var obj = {'artist':artist, 'name':name};
+        var obj = {'artist':artist, 'name':name, 'removed':false};
         arr = Playlist.songs[playlist_id];
         arr.push(obj);
 

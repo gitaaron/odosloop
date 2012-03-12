@@ -12,12 +12,20 @@
                     len = Playlist.push('{{playlist_id}}', '{{track.artist|escapejs}}', '{{track.name|escapejs}}');
 
                     id = len-1;
-
                     $('#{{playlist_id}}_'+id).bind('click',function() {
                         Playlist.shouldAutoPlay = true;
                         comps = $(this).attr('id').split('_');
                         id = comps[comps.length-1];
                         Playlist.open('{{playlist_id}}', id);
+
+                    });
+
+                    $('#remove_{{playlist_id}}_'+id).bind('click', function() {
+
+                        comps = $(this).attr('id').split('_');
+                        id = comps[comps.length-1];
+                        Playlist.remove('{{playlist_id}}', id);
+                        $(this).parent().remove();
                     });
 
                     $('#radio_{{playlist_id}}_'+id).bind('click',function() {
@@ -76,8 +84,8 @@
 
             <li class="vertical_item" id="{{playlist_id}}_item_{{forloop.counter0}}">
                 <div class="playlist_name_items">
-                    <a class="song"  ><div style="line-height:15pt"><b>{{track.artist}}</b> <br /><span style="font-size:13pt">{{track.name}}</span></div></a>
-                    <a class="action" id="{{playlist_id}}_{{forloop.counter0}}" href="javascript:void(0);"><div>play</div></a> 
+                    <a class="song action" id="{{playlist_id}}_{{forloop.counter0}}" href="javascript:void(0);" ><div style="line-height:15pt"><b>{{track.artist}}</b> <br /><span style="font-size:13pt">{{track.name}}</span></div></a>
+                    <a class="action" id="remove_{{playlist_id}}_{{forloop.counter0}}" href="javascript:void(0);"><div>remove</div></a> 
                     <a class="action" id="radio_{{playlist_id}}_{{forloop.counter0}}" href="javascript:void(0);"><div>radio</div></a>
 
 
