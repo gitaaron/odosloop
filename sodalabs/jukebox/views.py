@@ -1,3 +1,4 @@
+# set encoding=utf-8
 # Create your views here.
 import urllib
 from django.views.generic.simple import direct_to_template
@@ -90,7 +91,9 @@ def get_closest_video(request):
     track = _create_track(name,artist,q)
     search = artist + ' - ' + name
 
-    query.vq = _unescape(urllib.unquote(search))
+    query.vq = "%s" % (urllib.unquote(search).encode('utf-8'))
+    query.vq = str(query.vq)
+
     query.max_results = 25
     try:
         feed = client.YouTubeQuery(query)
