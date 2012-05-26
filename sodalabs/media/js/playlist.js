@@ -188,12 +188,12 @@ var Playlist = {
         // The video to load.
         var videoID = id
         // Lets Flash from another domain call JavaScript
-        var params = { allowScriptAccess: "always" , height:180, width:320, wmode:'opaque'};
+        var params = { allowScriptAccess: "always" , height:200, width:350, wmode:'opaque'};
         // The element id of the Flash embed
         var atts = { id: "ytPlayer" , 'wmode':'opaque'};
         // All of the magic handled by SWFObject (http://code.google.com/p/swfobject/)
         swfobject.embedSWF("http://www.youtube.com/v/" + videoID + "&version=3&enablejsapi=1&playerapiid="+API_KEY,
-                           "videoDiv", "320", "180", "8", null, null, params, atts);
+                           "videoDiv", "350", "200", "8", null, null, params, atts);
 
 
 
