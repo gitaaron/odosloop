@@ -20,6 +20,7 @@ urlpatterns = patterns('',
 
     (r'^$', include('sodalabs.home.urls')),
     (r'^home/', include('sodalabs.home.urls')),
+    (r'^google.*', direct_to_template, {'template':'googlee4da4f5e8858c1de.html'}),
     (r'^radio/', include('sodalabs.radio.urls')),
     (r'^jukebox/', include('sodalabs.jukebox.urls')),
     (r'^lastfm/', include('sodalabs.lastfm.urls')),
