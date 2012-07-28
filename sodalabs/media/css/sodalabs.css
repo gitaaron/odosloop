@@ -5,11 +5,11 @@ ul.vertical_list li.vertical_item { float:left; clear:both; width:100%; }
 #container { width:975px; }
 
 /* text colors */
-body { color:#111111; }
+body { color:#111111; background:#8fa298;}
 ul#track_list a.song, h3 { color:#111111; }
 ul#menu_list a:hover, ul#track_list a.action:hover { background:#dddd55; color:#992288; } 
 h1 a, #login_container a, h1 a:visited, #login_container a:visited { color:#2222DD; }
-#login_container { margin-top:18px; }
+#login_container { margin-top:55px; }
 
 /* old stuffs */
 div#videoDiv { width:320px; height:180px; }
@@ -57,8 +57,8 @@ a.song { width:306px; }
 
 /* header */
 #header h1 { font-size:27pt; width:235px; }
-#header #music_search_form { position:absolute; left:200px; top:30px;}
-#header #music_search_form input { color:#666666; width:400px; height:30px; font-size:29px; float:left;} 
+#header #music_search_form { position:absolute; left:300px; top:58px;}
+#header #music_search_form input { color:#666666; width:400px; height:24px; font-size:24px; float:left;} 
 #header #login_container { font-size:15pt; }
 #header #music_search_form button { 
     background: url(/site_media/img/search_button.png) no-repeat scroll; 
@@ -66,7 +66,7 @@ a.song { width:306px; }
     height:32px; 
     border:none; 
     float:left;
-    margin:3px;
+    margin:0 3px;
     cursor:pointer; 
 }
 
