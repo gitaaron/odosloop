@@ -6,8 +6,9 @@ ul.vertical_list li.vertical_item { float:left; clear:both; width:100%; }
 
 /* text colors */
 body { color:#111111; background:#8fa298;}
-ul#track_list a.song, h3 { color:#111111; }
-ul#menu_list a:hover, ul#track_list a.action:hover { background:#dddd55; color:#992288; } 
+a { color:#ee5e45; }
+ul#track_list a.song, h3 { color:#2a2829; }
+ul#menu_list a:hover, ul#track_list a.action:hover { background:#eaedca; color:#992288; } 
 h1 a, #login_container a, h1 a:visited, #login_container a:visited { color:#2222DD; }
 #login_container { margin-top:55px; }
 
@@ -28,8 +29,8 @@ h1 { margin:0px; font-size:20px;}
 .playlist_container h3 { margin:24px 0 5px 5px;  } 
 
 li.now_playing,a.selected { color:#992288!important; } 
-a.selected { background:#dddd55!important; } 
-li.now_playing div.playlist_name_items { background:#dddd55!important; }
+a.selected { background:#eaedca!important; } 
+li.now_playing div.playlist_name_items { background:#eaedca!important; }
 .playlist_name_items { float:left; }
 
 ul#menu_list li a,ul#track_list li a{text-decoration:none; float:left; } 
