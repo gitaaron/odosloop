@@ -16,7 +16,7 @@ h1 a, #login_container a, h1 a:visited, #login_container a:visited { color:#2222
 div#videoDiv { width:320px; height:180px; }
 div#loadingDummyVideo { width:320px; height:180px; background:#efcf22; }
 div#youtube_container h3, div#loadingVideoDiv h3 { height:43px;width:320px; overflow:hidden; margin:0px;}
-#lastfm_container li.vertical_item { font-size:14px;} 
+.playlist_container li.vertical_item { font-size:14px;} 
 #lastfm_friends_container,#lastfm_neighbors_container, #user_playlist_container { overflow:hidden; } 
 #lastfm_recents_container { width:250px; overflow:hidden; } 
 #youtube_container { height:352px; position:fixed; left:660px; top:120px;} 

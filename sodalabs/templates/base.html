@@ -3,19 +3,39 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
     <title id="browser_title">{% block title %}odosloop{% endblock %}</title>
-    <link rel="stylesheet" href="/site_media/css/reset.css" type="text/css"/>
     <link rel="stylesheet" type="text/css" href="/site_media/css/sodalabs.css" />
-    <script type="text/javascript" src="/site_media/js/jquery-1.7.1.min.js"></script>
-    <script type="text/javascript" src="/site_media/js/playlist.js"></script>
-    <script type="text/javascript" src="/site_media/js/search.js"></script>
-    <script type="text/javascript" src="/site_media/js/feed.js"></script>
-    <script type="text/javascript" src="/site_media/js/radio.js"></script>
-    <script type="text/javascript" src="/site_media/js/docstring.js"></script>
-    <script type="text/javascript" src="/site_media/js/dstring.js"></script>
-    <script type="text/javascript" src="/site_media/js/menu.js"></script>
-    <script type="text/javascript" src="/site_media/js/user.js"></script>
-    <script type="text/javascript" src="/site_media/js/userplaylist.js"></script>
-    <script type="text/javascript" src="/site_media/js/template.js"></script>
+    <script type="text/javascript">
+        var require = {
+            baseUrl:'site_media/src',
+            waitSeconds:5
+        }
+
+    </script>
+    <script type="text/javascript" src="/site_media/lib/jquery/require-jquery.js" ></script>
+
+    <script type="text/javascript" >
+
+          requirejs.config({
+              shim:{
+                'bootstrap':{
+                    deps:['underscore'],
+                    exports:'bootstrap'
+                },
+                'backbone':{
+                    deps:['underscore', 'jquery'],
+                    exports:'Backbone'
+                }
+              }
+
+          });
+
+
+
+        require(['main'], function() {
+            // do nothing
+        });
+    </script>
+
 
 
     <script type="text/javascript" src="/site_media/js/swfobject/src/swfobject.js"></script>
@@ -25,16 +45,7 @@
 </head>
 
 <body class="{% block body_class %}{% endblock %}">
-    <script type="text/javascript">
-        $(document).ready(function() {
-                Feed.init();
-                Radio.init();
-                Search.init();
-                DocString.init();
-                User.init();
-                UserPlaylist.init();
-        });
-    </script>
+
   <div id="container">
     {% include "accounts/signup_sub.html" %}
     {% include "header.html" %}
