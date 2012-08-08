@@ -7,12 +7,28 @@ require.config({
     }
 });
 
-require(['jquery', 'underscore', 'backbone', 'bootstrap', 'models', 'views'], function($, _, Backbone, bootstrap, models, views) {
+require(['jquery', 'underscore', 'backbone', 'bootstrap', 'models/democracy_list', 'models/song', 'views/playlist'], function($, _, Backbone, bootstrap, democracy_list, song, playlist_view) {
+
+
+    var Workspace = Backbone.Router.extend({
+        routes: {
+            'test':'test',
+            'song':'song'
+        },
+        test:function() {
+            console.log('this is a test');
+        },
+        song:function() {
+            console.log('this is a song');
+        }
+    });
 
     $(function() {
-        var democracy_list = new models.DemocracyList();
-        new views.Playlist({collection:democracy_list});
-        democracy_list.add([{name:'asdf'}, {name:'feqfq'}]);
+        var wp = new Workspace();
+        Backbone.history.start();
+        var dl = new democracy_list({app:wp});
+        new playlist_view({collection:dl});
+        dl.add([{name:'Kids', artist:'MGMT'}, {name:'Far Nearer', artist:'Jamie xx'}]);
     });
 
 });
