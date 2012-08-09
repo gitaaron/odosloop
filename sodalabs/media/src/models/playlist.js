@@ -21,8 +21,9 @@ define(['underscore','backbone', './song'], function(_, Backbone, song) {
 
         loadSearch:function(q) {
             var self = this;
+            this.trigger('loading');
             $.get('/api/search', {'q':unescape(q)}, function(data) {
-                console.log('search results : ' + data);
+                self.trigger('new_list', {title:'search results for : ' + q});
                 data = JSON.parse(data);
                 self.add(data);
             });        
