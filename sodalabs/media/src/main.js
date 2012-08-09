@@ -7,8 +7,12 @@ require.config({
     }
 });
 
-require(['jquery', 'underscore', 'backbone', 'bootstrap', 'models/democracy_list', 'models/song', 'views/playlist'], function($, _, Backbone, bootstrap, democracy_list, song, playlist_view) {
+/* Global event sender */
+var vent;
 
+require(['jquery', 'underscore', 'backbone', 'bootstrap', 'models/democracy_list', 'models/song', 'views/playlist'], function($, _und, Backbone, bootstrap, democracy_list, song, playlist_view) {
+
+    vent = _.extend({}, Backbone.Events);
 
     var Workspace = Backbone.Router.extend({
         routes: {
@@ -29,6 +33,12 @@ require(['jquery', 'underscore', 'backbone', 'bootstrap', 'models/democracy_list
         var dl = new democracy_list({app:wp});
         new playlist_view({collection:dl});
         dl.add([{name:'Kids', artist:'MGMT'}, {name:'Far Nearer', artist:'Jamie xx'}]);
+
+        
+        vent.bind('goToNext', function() {
+            dl.goToNext();
+        });
+
     });
 
 });
