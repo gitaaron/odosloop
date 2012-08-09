@@ -21,10 +21,10 @@ function onYouTubePlayerReady(playerId) {
 define(['exports'], function(exports) {
 
     exports.play = function(video_id, video_title) {
+
             console.log('play : ' + video_id);
             $('#title').html(video_title);
-            $('.now_playing').removeClass('now_playing');
-            $(this.el).addClass('now_playing');
+            vent.trigger('playing:'+video_id);
             // hide loading div and show video container
             $('#youtube_container').show();
             $('#loadingVideoDiv').hide();

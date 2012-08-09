@@ -10,7 +10,7 @@ require.config({
 /* Global event sender */
 var vent;
 
-require(['jquery', 'underscore', 'backbone', 'bootstrap', 'models/democracy_list', 'models/song', 'views/playlist'], function($, _und, Backbone, bootstrap, democracy_list, song, playlist_view) {
+require(['jquery', 'underscore', 'backbone', 'bootstrap', 'models/playlist', 'models/song', 'views/playlist', 'views/search'], function($, _und, Backbone, bootstrap, playlist, song, playlist_view, search_view) {
 
     vent = _.extend({}, Backbone.Events);
 
@@ -28,16 +28,22 @@ require(['jquery', 'underscore', 'backbone', 'bootstrap', 'models/democracy_list
     });
 
     $(function() {
+
         var wp = new Workspace();
         Backbone.history.start();
-        var dl = new democracy_list({app:wp});
-        new playlist_view({collection:dl});
-        dl.add([{name:'Kids', artist:'MGMT'}, {name:'Far Nearer', artist:'Jamie xx'}]);
-
+        var pl = new playlist({app:wp});
+        new playlist_view({collection:pl});
+        pl.add([{name:'Kids', artist:'MGMT'}, {name:'Far Nearer', artist:'Jamie xx'}]);
         
         vent.bind('goToNext', function() {
-            dl.goToNext();
+            pl.goToNext();
         });
+
+        var s = new search_view();
+        s.bind('search', function(data) {
+            console.log('search : ' + data.q);
+            pl.loadSearch(data.q);
+        }, this);   
 
     });
 

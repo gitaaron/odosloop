@@ -16,6 +16,10 @@ define(['underscore', 'backbone', '../youtube_player'], function(_, Backbone, yo
                     document.title = t; 
                 }
 
+                vent.on('playing:'+s['video_id'], function() {
+                    $('.now_playing').removeClass('now_playing');
+                    $(this.el).addClass('now_playing');
+                }, this);
                 youtube_player.play(s['video_id'], s['video_title']);
 
             }, this);

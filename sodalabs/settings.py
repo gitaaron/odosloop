@@ -89,7 +89,8 @@ INSTALLED_APPS = (
     'sodalabs.playlist',
     'sodalabs.jukebox',
     'sodalabs.accounts',
-    'sodalabs.lastfm'
+    'sodalabs.lastfm',
+    'sodalabs.api'
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (

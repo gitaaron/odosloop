@@ -24,6 +24,7 @@ urlpatterns = patterns('',
     (r'^radio/', include('sodalabs.radio.urls')),
     (r'^jukebox/', include('sodalabs.jukebox.urls')),
     (r'^lastfm/', include('sodalabs.lastfm.urls')),
+    (r'^api/', include('sodalabs.api.urls')),
     (r'^playlist/', include('sodalabs.playlist.urls')),
 
     # user account 

@@ -17,7 +17,17 @@ define(['underscore','backbone', './song'], function(_, Backbone, song) {
             var index = this.indexOf(this.currentSong);
             var song = this.models[index+1];
             song.trigger('play');
+        },
+
+        loadSearch:function(q) {
+            var self = this;
+            $.get('/api/search', {'q':unescape(q)}, function(data) {
+                console.log('search results : ' + data);
+                data = JSON.parse(data);
+                self.add(data);
+            });        
         }
+
     });
 
 
